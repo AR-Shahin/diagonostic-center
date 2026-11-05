@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f8fafc"/>
+  <rect x="0" y="0" width="900" height="70" fill="#0f172a"/>
+  <text x="30" y="44" fill="#ffffff" font-family="Arial, sans-serif" font-size="28">Admin Dashboard</text>
+  <rect x="30" y="100" width="250" height="90" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="310" y="100" width="250" height="90" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="590" y="100" width="250" height="90" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="50" y="148" fill="#0f172a" font-family="Arial, sans-serif" font-size="20">Total Admins</text>
+  <text x="50" y="178" fill="#0f172a" font-family="Arial, sans-serif" font-size="32" font-weight="bold">18</text>
+  <text x="330" y="148" fill="#0f172a" font-family="Arial, sans-serif" font-size="20">Categories</text>
+  <text x="330" y="178" fill="#0f172a" font-family="Arial, sans-serif" font-size="32" font-weight="bold">24</text>
+  <text x="610" y="148" fill="#0f172a" font-family="Arial, sans-serif" font-size="20">Backups</text>
+  <text x="610" y="178" fill="#0f172a" font-family="Arial, sans-serif" font-size="32" font-weight="bold">5</text>
+  <rect x="30" y="220" width="810" height="220" rx="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="50" y="254" fill="#0f172a" font-family="Arial, sans-serif" font-size="22">Recent Activity</text>
+  <line x1="50" y1="276" x2="850" y2="276" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="50" y="308" fill="#475569" font-family="Arial, sans-serif" font-size="18">• New admin account created</text>
+  <text x="50" y="340" fill="#475569" font-family="Arial, sans-serif" font-size="18">• Category "E-commerce" updated</text>
+  <text x="50" y="372" fill="#475569" font-family="Arial, sans-serif" font-size="18">• Backup completed successfully</text>
+  <text x="50" y="404" fill="#475569" font-family="Arial, sans-serif" font-size="18">• Permission settings synced</text>
+</svg>

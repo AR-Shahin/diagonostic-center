@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f8fafc"/>
+  <rect x="0" y="0" width="900" height="70" fill="#0f172a"/>
+  <text x="30" y="44" fill="#ffffff" font-family="Arial, sans-serif" font-size="28">Admin Management</text>
+  <rect x="30" y="100" width="840" height="320" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="50" y="140" fill="#0f172a" font-family="Arial, sans-serif" font-size="22">Admins</text>
+  <rect x="50" y="170" width="820" height="2" fill="#e2e8f0"/>
+  <text x="60" y="210" fill="#475569" font-family="Arial, sans-serif" font-size="16">Name</text>
+  <text x="260" y="210" fill="#475569" font-family="Arial, sans-serif" font-size="16">Email</text>
+  <text x="540" y="210" fill="#475569" font-family="Arial, sans-serif" font-size="16">Role</text>
+  <text x="720" y="210" fill="#475569" font-family="Arial, sans-serif" font-size="16">Status</text>
+  <rect x="50" y="230" width="820" height="54" rx="12" fill="#f8fafc"/>
+  <rect x="50" y="294" width="820" height="54" rx="12" fill="#f8fafc"/>
+  <rect x="50" y="358" width="820" height="54" rx="12" fill="#f8fafc"/>
+  <text x="60" y="265" fill="#0f172a" font-family="Arial, sans-serif" font-size="18">John Doe</text>
+  <text x="260" y="265" fill="#475569" font-family="Arial, sans-serif" font-size="16">john@example.com</text>
+  <text x="540" y="265" fill="#475569" font-family="Arial, sans-serif" font-size="16">Administrator</text>
+  <text x="720" y="265" fill="#16a34a" font-family="Arial, sans-serif" font-size="16">Active</text>
+  <text x="60" y="329" fill="#0f172a" font-family="Arial, sans-serif" font-size="18">Jane Smith</text>
+  <text x="260" y="329" fill="#475569" font-family="Arial, sans-serif" font-size="16">jane@example.com</text>
+  <text x="540" y="329" fill="#475569" font-family="Arial, sans-serif" font-size="16">Editor</text>
+  <text x="720" y="329" fill="#16a34a" font-family="Arial, sans-serif" font-size="16">Active</text>
+  <text x="60" y="393" fill="#0f172a" font-family="Arial, sans-serif" font-size="18">Admin User</text>
+  <text x="260" y="393" fill="#475569" font-family="Arial, sans-serif" font-size="16">admin@example.com</text>
+  <text x="540" y="393" fill="#475569" font-family="Arial, sans-serif" font-size="16">Manager</text>
+  <text x="720" y="393" fill="#f97316" font-family="Arial, sans-serif" font-size="16">Pending</text>
+</svg>
