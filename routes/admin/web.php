@@ -7,9 +7,12 @@ use App\Http\Controllers\Admin\BusinessSettingController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\LabTestController;
 use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\ReferrerController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SampleTypeController;
 use App\Http\Controllers\Admin\SettingController;
@@ -65,4 +68,23 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
 
     Route::get('business-settings', [BusinessSettingController::class, 'index'])->name('business-settings.index');
     Route::post('business-settings', [BusinessSettingController::class, 'update'])->name('business-settings.update');
+
+    // ---- Phase 2: patients & billing
+    Route::get('patients/search', [PatientController::class, 'search'])->name('patients.search');
+    Route::post('patients/{patient}/reset-password', [PatientController::class, 'resetPassword'])->name('patients.reset-password');
+    Route::resource('patients', PatientController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::get('referrers/search', [ReferrerController::class, 'search'])->name('referrers.search');
+    Route::resource('referrers', ReferrerController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    Route::controller(InvoiceController::class)->prefix('invoices')->name('invoices.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('', 'store')->name('store');
+        Route::get('items', 'items')->name('items');
+        Route::get('receipts/{payment}/print', 'receipt')->name('receipt');
+        Route::get('{invoice}', 'show')->name('show');
+        Route::get('{invoice}/print', 'print')->name('print');
+        Route::post('{invoice}/collect', 'collect')->name('collect');
+        Route::post('{invoice}/cancel', 'cancel')->name('cancel');
+    });
 });

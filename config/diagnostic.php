@@ -22,6 +22,9 @@ return [
         // Reports
         'block_report_if_due' => 1,          // counter delivery
         'block_portal_report_if_due' => 1,   // patient portal download
+
+        // Patient website account (login = phone number, first password = phone number)
+        'portal_force_password_change' => 1,
     ],
 
     'discount_bearers' => [

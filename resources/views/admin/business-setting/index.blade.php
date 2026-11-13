@@ -55,6 +55,7 @@
                         <div class="card-body">
                             <x-admin.switch name="block_report_if_due" label="Hold the printed report at the counter until the due is paid" :checked="(bool) $values['block_report_if_due']" />
                             <x-admin.switch name="block_portal_report_if_due" label="Hide the online report in the patient portal while a due is unpaid" :checked="(bool) $values['block_portal_report_if_due']" />
+                            <x-admin.switch name="portal_force_password_change" label="Patients must set their own password after the first login (first password = phone number)" :checked="(bool) $values['portal_force_password_change']" />
                         </div>
                     </div>
                 </div>

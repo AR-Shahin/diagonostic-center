@@ -572,3 +572,29 @@ html[lang="en"] .alt-lang { display: none !important; }
     .js .reveal { opacity: 1; transform: none; transition: none; }
     *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }
+
+/* ---------- Patient account (portal) ---------- */
+.portal-stat { padding: 1.1rem 1.3rem; }
+.portal-stat small { display: block; color: var(--muted); }
+.portal-stat b { font-size: 1.7rem; color: var(--heading); font-variant-numeric: tabular-nums; }
+.portal-stat.is-due b { color: #B42318; }
+.portal-bill { flex-direction: row; align-items: center; gap: 1rem; margin-bottom: .75rem; padding: 1.1rem 1.3rem; color: inherit; text-decoration: none; }
+.portal-bill-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.portal-bill-main b { color: var(--heading); }
+.portal-bill-main span { font-size: .92rem; }
+.portal-bill-main small { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.portal-bill-side { display: flex; flex-direction: column; align-items: flex-end; gap: .3rem; }
+.portal-bill .price-now { font-size: 1.15rem; }
+.portal-due { background: #FEE4E2; color: #B42318; }
+.portal-items { list-style: none; margin: 0; padding: 0; }
+.portal-items li { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--border); }
+.portal-items li small { display: block; color: var(--muted); }
+.portal-items .num, .portal-sum span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.portal-sum { display: flex; justify-content: space-between; padding: .35rem 0; }
+.portal-sum.is-total { margin-top: .4rem; padding-top: .7rem; border-top: 1px solid var(--border); font-weight: 700; color: var(--heading); font-size: 1.1rem; }
+.portal-sum.is-due { color: #B42318; font-weight: 700; }
+@media (max-width: 575.98px) { .portal-bill { flex-wrap: wrap; } .portal-bill .bi-chevron-right { display: none; } .portal-bill-side { flex-direction: row; align-items: center; } }
+@media print { .site-header, .topbar, .site-footer, .page-hero .crumbs, .btn { display: none !important; } }
+
+.topbar-account { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; }
+.topbar-account i { color: var(--secondary-light); }

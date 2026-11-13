@@ -10,6 +10,11 @@
         </ul>
 
         <div class="topbar-right">
+            @auth('web')
+                <a class="topbar-account" href="{{ route('portal.dashboard') }}"><i class="bi bi-person-circle" aria-hidden="true"></i> {{ __('আমার অ্যাকাউন্ট') }}</a>
+            @else
+                <a class="topbar-account" href="{{ route('login') }}"><i class="bi bi-person-circle" aria-hidden="true"></i> {{ __('লগইন') }}</a>
+            @endauth
             <div class="lang-switch" role="group" aria-label="{{ __('ভাষা নির্বাচন') }}">
                 <a href="?lang=bn" @class(['is-active' => app()->getLocale() === 'bn']) @if (app()->getLocale() === 'bn') aria-current="true" @endif lang="bn" hreflang="bn">বাংলা</a>
                 <a href="?lang=en" @class(['is-active' => app()->getLocale() === 'en']) @if (app()->getLocale() === 'en') aria-current="true" @endif lang="en" hreflang="en">English</a>

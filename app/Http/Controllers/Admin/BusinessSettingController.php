@@ -44,7 +44,7 @@ class BusinessSettingController extends Controller
             'commission_trigger' => ['required', Rule::in(array_keys(config('diagnostic.commission_triggers')))],
         ]);
 
-        foreach (['round_to_whole_taka', 'commission_enabled', 'block_report_if_due', 'block_portal_report_if_due'] as $flag) {
+        foreach (['round_to_whole_taka', 'commission_enabled', 'block_report_if_due', 'block_portal_report_if_due', 'portal_force_password_change'] as $flag) {
             $data[$flag] = $request->boolean($flag) ? 1 : 0;
         }
         $data['invoice_prefix'] = strtoupper($data['invoice_prefix']);

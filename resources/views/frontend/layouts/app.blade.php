@@ -26,7 +26,7 @@
     <title>{{ $fullTitle }}</title>
     <meta name="description" content="{{ $metaDescription }}">
     <link rel="canonical" href="{{ $canonical }}">
-    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="robots" content="@yield('robots', 'index, follow, max-image-preview:large')">
     <meta name="theme-color" content="#1557A6">
 
     <meta property="og:type" content="website">

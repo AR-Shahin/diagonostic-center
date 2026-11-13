@@ -119,4 +119,14 @@
     document.querySelectorAll('[data-demo-action]').forEach((btn) => {
         btn.addEventListener('click', () => showToast(document.body.dataset.msgOtp || ''));
     });
+
+    /* ---- Show / hide password ---- */
+    document.querySelectorAll('[data-toggle-password]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const input = document.getElementById(btn.dataset.togglePassword);
+            const show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            btn.querySelector('i')?.classList.toggle('bi-eye-slash', show);
+        });
+    });
 })();

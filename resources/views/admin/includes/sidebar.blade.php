@@ -47,6 +47,32 @@
 
 
 
+
+          @php
+              $billingMenu = [
+                  ['admin.invoices.create', 'admin.invoices.create', [], 'invoice-create', 'fas fa-cash-register', 'New bill'],
+                  ['admin.invoices.index', 'admin.invoices.index', [], 'invoice-view', 'fas fa-file-invoice-dollar', 'Invoices'],
+                  [null, 'admin.invoices.index', ['status' => 'due'], 'invoice-view', 'fas fa-hand-holding-usd', 'Due list'],
+                  ['admin.patients.*', 'admin.patients.index', [], 'patient-view', 'fas fa-user-injured', 'Patients'],
+                  ['admin.referrers.*', 'admin.referrers.index', [], 'referrer-view', 'fas fa-user-md', 'Referrers'],
+              ];
+              $visibleBilling = array_filter($billingMenu, fn ($m) => in_array($m[3], $permissions));
+          @endphp
+          @if ($visibleBilling)
+          <li class="nav-header">BILLING</li>
+          @foreach ($visibleBilling as [$pattern, $route, $params, $perm, $icon, $label])
+          @php
+              $isDueLink = $pattern === null;
+              $onDueList = request()->routeIs('admin.invoices.index') && request('status') === 'due';
+              $isActive = $isDueLink ? $onDueList : (request()->routeIs($pattern) && ! $onDueList);
+          @endphp
+          <li class="nav-item">
+            <a href="{{ route($route, $params) }}" @class(['nav-link', 'active' => $isActive])>
+              <i class="nav-icon {{ $icon }}"></i><p>{{ $label }}</p>
+            </a>
+          </li>
+          @endforeach
+          @endif
           @php
               $catalogMenu = [
                   ['admin.lab-tests.*', 'admin.lab-tests.index', 'labtest-view', 'Tests'],

@@ -24,6 +24,8 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+        'branch_id',
+        'max_discount_percent',
     ];
 
     /**
