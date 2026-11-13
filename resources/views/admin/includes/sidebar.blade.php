@@ -48,6 +48,11 @@
 
 
 
+          <li class="nav-item">
+            <a href="{{ route('admin.manual') }}" @class(['nav-link', 'active' => request()->routeIs('admin.manual')])>
+              <i class="nav-icon fas fa-book-open"></i><p>ব্যবহার নির্দেশিকা</p>
+            </a>
+          </li>
           @php
               $billingMenu = [
                   ['admin.invoices.create', 'admin.invoices.create', [], 'invoice-create', 'fas fa-cash-register', 'New bill'],

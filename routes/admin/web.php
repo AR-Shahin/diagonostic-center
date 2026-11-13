@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\LabTestController;
+use App\Http\Controllers\Admin\ManualController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/manual', ManualController::class)->name('manual');
 
     // Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
