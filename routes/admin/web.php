@@ -2,13 +2,11 @@
 
 use App\Helper\Trait\Helper;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function () {
@@ -49,15 +47,4 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
 
     // Category
     Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
-
-    Route::get('shahin', [BackupController::class, 'backupAndDownload']);
-    Route::get('/download', function (Request $request) {
-        $filePath = storage_path('app/'.$request->query('file'));
-
-        if (file_exists($filePath)) {
-            return response()->download($filePath);
-        }
-
-        abort(404, 'File not found.');
-    })->name('admin.download');
 });

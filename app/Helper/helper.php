@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 function database_backup(Helper $helper)
 {
@@ -71,11 +70,6 @@ function database_backup_with_file(Helper $helper)
 
         $zipFiles = File::glob("$directoryPath/*.zip");
         foreach ($zipFiles as $zipFile) {
-
-            $filename = pathinfo($zipFile, PATHINFO_FILENAME);
-
-            $zipFileContents = Storage::get("Laravel/{$filename}.zip");
-
             unlink($zipFile);
         }
 

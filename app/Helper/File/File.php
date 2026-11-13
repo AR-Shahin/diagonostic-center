@@ -153,32 +153,6 @@ class File
     }
 
     /**
-     * Upload bulk image for district, replacing existing image for the day.
-     */
-    public static function uploadDistrictBulkImage($file, $folder, $district, $day): ?string
-    {
-        if (is_null($file)) {
-            return null;
-        }
-
-        self::validateFile($file);
-
-        $existing = $district->images->first(fn ($image) => str_contains(strtolower($image->image), strtolower($day)));
-
-        if ($existing) {
-            self::deleteFile($existing->image);
-            $existing->delete();
-        }
-
-        $fileName = self::sanitizeFileName($file->getClientOriginalName());
-        $storedPath = Storage::putFileAs("public/$folder", $file, $fileName);
-
-        self::setReadOnly($storedPath);
-
-        return "storage/$folder/$fileName";
-    }
-
-    /**
      * Validate uploaded file type and size.
      */
     private static function validateFile($file): void

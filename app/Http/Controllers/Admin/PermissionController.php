@@ -30,8 +30,6 @@ class PermissionController extends Controller
             })
             ->rawColumns(['actions'])
             ->make(true);
-
-        return view('admin.permission.index', compact('permissions'));
     }
 
     public function store(Request $request, Permission $permission)
