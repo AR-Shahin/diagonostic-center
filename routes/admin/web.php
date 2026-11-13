@@ -2,16 +2,23 @@
 
 use App\Helper\Trait\Helper;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\BusinessSettingController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\LabTestController;
+use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SampleTypeController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\UnitController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
@@ -47,4 +54,15 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
 
     // Category
     Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
+
+    // ---- Phase 1: setup & catalog
+    Route::resource('branches', BranchController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('departments', DepartmentController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('sample-types', SampleTypeController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('units', UnitController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('lab-tests', LabTestController::class)->except(['show']);
+    Route::resource('packages', PackageController::class)->except(['show']);
+
+    Route::get('business-settings', [BusinessSettingController::class, 'index'])->name('business-settings.index');
+    Route::post('business-settings', [BusinessSettingController::class, 'update'])->name('business-settings.update');
 });

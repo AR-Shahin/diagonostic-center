@@ -24,9 +24,13 @@
 
     <div class="pkg-foot">
         <div class="price">
-            <s class="price-old">৳ {{ $pkg['old_price'] }}</s>
+            @if ($pkg['old_price'])
+                <s class="price-old">৳ {{ $pkg['old_price'] }}</s>
+            @endif
             <span class="price-now">৳ {{ $pkg['price'] }}</span>
-            <span class="tag tag-teal">{{ __('সাশ্রয়') }} ৳ {{ $pkg['saving'] }}</span>
+            @if ($pkg['saving'])
+                <span class="tag tag-teal">{{ __('সাশ্রয়') }} ৳ {{ $pkg['saving'] }}</span>
+            @endif
         </div>
         <div class="pkg-actions">
             <a href="{{ route('site.packages') }}#{{ $pkg['slug'] }}" class="btn btn-ghost btn-sm">{{ __('বিস্তারিত') }}</a>

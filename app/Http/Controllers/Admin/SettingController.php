@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Helper\File\File;
 use App\Http\Controllers\Controller;
 use App\Models\WebsiteInfo;
+use App\Support\SiteTheme;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SettingController extends Controller
 {
@@ -13,8 +15,10 @@ class SettingController extends Controller
     {
         // Get the first setting row, or create one if it doesn't exist
         $setting = WebsiteInfo::firstOrCreate(['id' => 1]);
-        
-        return view('admin.setting.index', compact('setting'));
+
+        $themes = SiteTheme::presets();
+
+        return view('admin.setting.index', compact('setting', 'themes'));
     }
 
     public function update(Request $request)
@@ -32,6 +36,9 @@ class SettingController extends Controller
             'linkedin_url' => 'nullable|url|max:255',
             'footer_text' => 'nullable|string|max:500',
             'maintenance_mode' => 'nullable|boolean',
+            'theme_preset' => ['required', Rule::in(array_keys(SiteTheme::presets()))],
+            'opening_hours_en' => 'nullable|string|max:255',
+            'opening_hours_bn' => 'nullable|string|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB max
             'favicon' => 'nullable|image|mimes:jpeg,png,jpg,gif,ico|max:2048', // 2MB max
         ]);
@@ -58,6 +65,8 @@ class SettingController extends Controller
 
         $setting->update($data);
 
-        return redirect()->back()->with('status', 'Settings updated successfully!');
+        $this->successAlert('Settings updated successfully!');
+
+        return redirect()->back();
     }
 }

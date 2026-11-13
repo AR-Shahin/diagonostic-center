@@ -2,6 +2,7 @@
 
 namespace App\Support\Frontend;
 
+use App\Models\WebsiteInfo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -41,7 +42,8 @@ class DemoContent
             'email' => $pick($w->email ?? null, 'info@example.com'),
             'address' => $pick($w->address ?? null, __('[ঠিকানা], [এলাকা], [শহর]')),
             'address_set' => filled($w->address ?? null),
-            'hours' => __('প্রতিদিন [খোলার সময়]'),
+            'hours' => self::localizedSetting($w, 'opening_hours') ?? __('প্রতিদিন [খোলার সময়]'),
+            'theme' => $w->theme_preset ?? null,
             'social' => [
                 'facebook' => $w->facebook_url ?? null,
                 'instagram' => $w->instagram_url ?? null,
@@ -77,9 +79,9 @@ class DemoContent
                 ['icon' => 'bi-file-earmark-arrow-down', 'title' => __('রিপোর্ট ডাউনলোড'), 'desc' => __('মোবাইল নম্বর বা ইনভয়েস দিয়ে রিপোর্ট নিন।'), 'url' => route('site.report')],
                 ['icon' => 'bi-house-heart', 'title' => __('বাসায় নমুনা সংগ্রহ'), 'desc' => __('ঘরে বসেই নমুনা দেওয়ার অনুরোধ করুন।'), 'url' => route('site.home').'#home-collection'],
             ],
-            'departments' => $departments,
-            'tests' => self::tests(),
-            'packages' => self::packages(),
+            'departments' => CatalogContent::departments() ?? $departments,
+            'tests' => CatalogContent::tests() ?? self::tests(),
+            'packages' => CatalogContent::packages() ?? self::packages(),
             'services' => self::services(),
             'doctors' => self::doctors(),
             'specialities' => [__('মেডিসিন'), __('কার্ডিওলজি'), __('গাইনোকোলজি'), __('প্যাথলজি'), __('রেডিওলজি'), __('এন্ডোক্রাইনোলজি'), __('নেফ্রোলজি'), __('শিশুরোগ')],
@@ -108,7 +110,7 @@ class DemoContent
                 ['icon' => 'bi-hospital', 'title' => __('সেন্টারে আসুন বা বাসায় নমুনা দিন'), 'desc' => __('শাখায় এসে বা ঘরে বসে নমুনা দিন।')],
                 ['icon' => 'bi-cloud-arrow-down', 'title' => __('অনলাইনে রিপোর্ট নিন'), 'desc' => __('প্রস্তুত হলে এসএমএস পাবেন, ডাউনলোড করুন।')],
             ],
-            'branches' => [
+            'branches' => CatalogContent::branches() ?? [
                 ['name' => __('[প্রধান শাখার নাম]'), 'address' => __('[ঠিকানা], [এলাকা], [শহর]'), 'phone' => __('[ফোন নম্বর]'), 'hours' => __('[খোলার সময়]'), 'services' => [__('প্যাথলজি'), __('ইমেজিং'), __('নমুনা সংগ্রহ')], 'image' => null],
                 ['name' => __('[শাখা ২]'), 'address' => __('[ঠিকানা], [এলাকা], [শহর]'), 'phone' => __('[ফোন নম্বর]'), 'hours' => __('[খোলার সময়]'), 'services' => [__('প্যাথলজি'), __('নমুনা সংগ্রহ')], 'image' => null],
                 ['name' => __('[শাখা ৩]'), 'address' => __('[ঠিকানা], [এলাকা], [শহর]'), 'phone' => __('[ফোন নম্বর]'), 'hours' => __('[খোলার সময়]'), 'services' => [__('প্যাথলজি'), __('আল্ট্রাসাউন্ড')], 'image' => null],
@@ -227,10 +229,21 @@ class DemoContent
         ], $specs);
     }
 
+    private static function localizedSetting($w, string $field): ?string
+    {
+        if (! $w) {
+            return null;
+        }
+        $locale = app()->getLocale() === 'en' ? 'en' : 'bn';
+        $other = $locale === 'en' ? 'bn' : 'en';
+
+        return ($w->{"{$field}_{$locale}"} ?? null) ?: (($w->{"{$field}_{$other}"} ?? null) ?: null);
+    }
+
     private static function websiteInfo()
     {
         try {
-            return class_exists(\App\Models\WebsiteInfo::class) ? \App\Models\WebsiteInfo::first() : null;
+            return class_exists(WebsiteInfo::class) ? WebsiteInfo::first() : null;
         } catch (\Throwable) {
             return null;
         }

@@ -32,7 +32,7 @@
                             </div>
                             <div class="branch-actions">
                                 <a class="btn btn-primary btn-sm" href="{{ route('site.contact') }}">{{ __('শাখা খুঁজুন') }}</a>
-                                <a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query={{ urlencode($branch['address']) }}" target="_blank" rel="noopener"><i class="bi bi-sign-turn-right" aria-hidden="true"></i> {{ __('গুগল ম্যাপ') }}</a>
+                                <a class="btn btn-ghost btn-sm" href="{{ ($branch['map_url'] ?? null) ?: 'https://www.google.com/maps/search/?api=1&query='.urlencode($branch['address']) }}" target="_blank" rel="noopener"><i class="bi bi-sign-turn-right" aria-hidden="true"></i> {{ __('গুগল ম্যাপ') }}</a>
                             </div>
                         </div>
                     </article>

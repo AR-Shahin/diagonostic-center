@@ -37,6 +37,11 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RolePermissionSeeder::class,
             CategorySeeder::class,
+            CatalogPermissionSeeder::class,
         ]);
+
+        if (app()->isLocal()) {
+            $this->call(DemoCatalogSeeder::class);
+        }
     }
 }

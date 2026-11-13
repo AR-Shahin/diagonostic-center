@@ -46,6 +46,50 @@
           @endif
 
 
+
+          @php
+              $catalogMenu = [
+                  ['admin.lab-tests.*', 'admin.lab-tests.index', 'labtest-view', 'Tests'],
+                  ['admin.packages.*', 'admin.packages.index', 'package-view', 'Health packages'],
+                  ['admin.departments.*', 'admin.departments.index', 'department-view', 'Departments'],
+                  ['admin.sample-types.*', 'admin.sample-types.index', 'sampletype-view', 'Sample types'],
+                  ['admin.units.*', 'admin.units.index', 'unit-view', 'Units'],
+              ];
+              $visibleCatalog = array_filter($catalogMenu, fn ($m) => in_array($m[2], $permissions));
+              $catalogOpen = collect($visibleCatalog)->contains(fn ($m) => request()->routeIs($m[0]));
+          @endphp
+          @if ($visibleCatalog)
+          <li class="nav-header">DIAGNOSTIC SETUP</li>
+          <li @class(['nav-item', 'menu-open' => $catalogOpen])>
+            <a href="#" @class(['nav-link', 'active' => $catalogOpen])>
+              <i class="nav-icon fas fa-flask"></i>
+              <p>Test catalog <i class="nav-arrow fas fa-angle-right"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+              @foreach ($visibleCatalog as [$pattern, $route, $perm, $label])
+              <li class="nav-item">
+                <a href="{{ route($route) }}" @class(['nav-link', 'active' => request()->routeIs($pattern)])>
+                  <i class="far fa-circle nav-icon"></i><p>{{ $label }}</p>
+                </a>
+              </li>
+              @endforeach
+            </ul>
+          </li>
+          @endif
+          @if (in_array('branch-view', $permissions))
+          <li class="nav-item">
+            <a href="{{ route('admin.branches.index') }}" @class(['nav-link', 'active' => request()->routeIs('admin.branches.*')])>
+              <i class="nav-icon fas fa-code-branch"></i><p>Branches</p>
+            </a>
+          </li>
+          @endif
+          @if (in_array('businesssetting-view', $permissions))
+          <li class="nav-item">
+            <a href="{{ route('admin.business-settings.index') }}" @class(['nav-link', 'active' => request()->routeIs('admin.business-settings.*')])>
+              <i class="nav-icon fas fa-sliders-h"></i><p>Business rules</p>
+            </a>
+          </li>
+          @endif
           <li class="nav-item">
             <a href="{{ url('log-viewer') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>

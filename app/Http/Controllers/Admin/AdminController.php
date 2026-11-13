@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Branch;
 use Exception;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -48,7 +49,9 @@ class AdminController extends Controller
         $this->authorize('admin-create');
         $roles = Role::whereGuardName('admin')->get(['id', 'name']);
 
-        return view('admin.admin.create', compact('roles'));
+        $branches = Branch::orderBy('sort')->pluck('name_en', 'id');
+
+        return view('admin.admin.create', compact('roles', 'branches'));
     }
 
     public function edit(Admin $admin)
@@ -56,7 +59,9 @@ class AdminController extends Controller
         $this->authorize('admin-edit');
         $roles = Role::whereGuardName('admin')->get(['id', 'name']);
 
-        return view('admin.admin.edit', compact('roles', 'admin'));
+        $branches = Branch::orderBy('sort')->pluck('name_en', 'id');
+
+        return view('admin.admin.edit', compact('roles', 'admin', 'branches'));
     }
 
     public function store(Request $request)
@@ -67,6 +72,8 @@ class AdminController extends Controller
             'email' => ['required', 'string', 'unique:admins,email'],
             'password' => ['required', 'confirmed'],
             'role_id' => ['required', 'exists:roles,id'],
+            'branch_id' => ['nullable', 'exists:branches,id'],
+            'max_discount_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ]);
         try {
             $admin = new Admin;
@@ -74,6 +81,8 @@ class AdminController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
+                'branch_id' => $request->input('branch_id'),
+                'max_discount_percent' => (float) $request->input('max_discount_percent', 0),
             ]);
             $message = 'Admin Created!';
             $admin->save();
@@ -93,11 +102,15 @@ class AdminController extends Controller
         $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'string', "unique:admins,email,$admin->id"],
+            'branch_id' => ['nullable', 'exists:branches,id'],
+            'max_discount_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ]);
         try {
             $admin->fill([
                 'name' => $request->name,
                 'email' => $request->email,
+                'branch_id' => $request->input('branch_id'),
+                'max_discount_percent' => (float) $request->input('max_discount_percent', 0),
             ]);
             $message = 'Admin Updated!';
             $admin->save();

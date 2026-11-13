@@ -51,6 +51,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <x-admin.select name="branch_id" label="Branch" :options="$branches" placeholder="All branches (head office)" :value="$admin->branch_id" help="Bills and reports this person creates are tagged with this branch." />
+                        </div>
+                        <div class="col-md-6">
+                            <x-admin.input name="max_discount_percent" label="Max discount without approval (%)" type="number" step="0.01" min="0" max="100" :value="$admin->max_discount_percent" />
+                        </div>
+                    </div>
                     <x-form.submit/>
 
                 </form>

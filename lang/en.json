@@ -438,5 +438,7 @@
     "ডা. [চিকিৎসকের নাম]": "Dr. [Doctor's name]",
     "MBBS, [ডিগ্রি]": "MBBS, [Degree]",
     "[পদবি]": "[Designation]",
-    "[দিন ও সময়]": "[Day & time]"
+    "[দিন ও সময়]": "[Day & time]",
+    ":n ঘণ্টা": ":n hours",
+    ":n দিন": ":n days"
 }
