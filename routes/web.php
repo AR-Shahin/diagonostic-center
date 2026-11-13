@@ -4,9 +4,8 @@ use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('admin.login');
-});
+// Public website (home, tests, packages, doctors, ...)
+require __DIR__.'/frontend.php';
 
 Route::get('/dashboard', function () {
     return view('dashboard');

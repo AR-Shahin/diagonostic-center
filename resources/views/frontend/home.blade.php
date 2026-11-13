@@ -1,0 +1,23 @@
+@extends('frontend.layouts.app')
+
+@section('description', 'টেস্ট খুঁজুন, অ্যাপয়েন্টমেন্ট নিন, বাসা থেকে নমুনা দিন এবং অনলাইনে রিপোর্ট ডাউনলোড করুন। প্যাথলজি, ইমেজিং, কার্ডিওলজি ও হেলথ প্যাকেজ—সবই এক জায়গায়।')
+
+@section('content')
+    @include('frontend.home.hero')
+    @include('frontend.home.stats')
+    @include('frontend.home.quick-access')
+    @include('frontend.home.popular-tests')
+    @include('frontend.home.packages')
+    @include('frontend.home.departments')
+    @include('frontend.home.services')
+    @include('frontend.home.doctors')
+    @include('frontend.home.home-collection')
+    @include('frontend.home.why-us')
+    @include('frontend.home.how-it-works')
+    @include('frontend.home.branches')
+    @include('frontend.home.testimonials')
+    @include('frontend.home.corporate')
+    @include('frontend.home.articles')
+    @include('frontend.home.faq')
+    @include('frontend.home.final-cta')
+@endsection
