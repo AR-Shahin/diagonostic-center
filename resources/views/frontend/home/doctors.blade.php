@@ -2,9 +2,9 @@
     <div class="container">
         @include('frontend.partials.section-head', [
             'id' => 'doctors-title',
-            'eyebrow' => 'বিশেষজ্ঞ চিকিৎসক',
-            'title' => 'অভিজ্ঞ চিকিৎসকদের <span class="grad">পরামর্শ নিন</span>',
-            'sub' => 'চেম্বারের সময় দেখে সহজেই অ্যাপয়েন্টমেন্ট বুক করুন।',
+            'eyebrow' => __('বিশেষজ্ঞ চিকিৎসক'),
+            'title' => __('অভিজ্ঞ চিকিৎসকদের <span class="grad">পরামর্শ নিন</span>'),
+            'sub' => __('চেম্বারের সময় দেখে সহজেই অ্যাপয়েন্টমেন্ট বুক করুন।'),
         ])
 
         <div class="row g-4">
@@ -16,7 +16,7 @@
         </div>
 
         <div class="text-center mt-5 reveal">
-            <a class="btn btn-ghost btn-lg" href="{{ route('site.doctors') }}">সব চিকিৎসক দেখুন <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="btn btn-ghost btn-lg" href="{{ route('site.doctors') }}">{{ __('সব চিকিৎসক দেখুন') }} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
     </div>
 </section>

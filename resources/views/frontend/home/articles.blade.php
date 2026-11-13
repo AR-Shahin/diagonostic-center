@@ -2,9 +2,9 @@
     <div class="container">
         @include('frontend.partials.section-head', [
             'id' => 'articles-title',
-            'eyebrow' => 'স্বাস্থ্য পরামর্শ ও নিবন্ধ',
-            'title' => 'সুস্থ থাকতে <span class="grad">জানুন আরও</span>',
-            'sub' => 'স্বাস্থ্য সচেতনতা, টেস্টের প্রস্তুতি ও মৌসুমি পরামর্শ।',
+            'eyebrow' => __('স্বাস্থ্য পরামর্শ ও নিবন্ধ'),
+            'title' => __('সুস্থ থাকতে <span class="grad">জানুন আরও</span>'),
+            'sub' => __('স্বাস্থ্য সচেতনতা, টেস্টের প্রস্তুতি ও মৌসুমি পরামর্শ।'),
         ])
 
         <div class="row g-4">
@@ -25,7 +25,7 @@
                             </div>
                             <h3><a href="{{ $article['url'] }}">{{ $article['title'] }}</a></h3>
                             <p>{{ $article['excerpt'] }}</p>
-                            <a class="link-arrow" href="{{ $article['url'] }}">আরও পড়ুন <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                            <a class="link-arrow" href="{{ $article['url'] }}">{{ __('আরও পড়ুন') }} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
                         </div>
                     </article>
                 </div>

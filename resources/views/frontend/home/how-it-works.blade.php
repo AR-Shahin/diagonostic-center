@@ -2,8 +2,8 @@
     <div class="container">
         @include('frontend.partials.section-head', [
             'id' => 'how-title',
-            'eyebrow' => 'কীভাবে কাজ করে',
-            'title' => 'চার ধাপে <span class="grad">সহজ ডায়াগনস্টিক সেবা</span>',
+            'eyebrow' => __('কীভাবে কাজ করে'),
+            'title' => __('চার ধাপে <span class="grad">সহজ ডায়াগনস্টিক সেবা</span>'),
         ])
 
         <ol class="steps">

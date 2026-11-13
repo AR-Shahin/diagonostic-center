@@ -7,9 +7,9 @@
     <div class="container">
         @include('frontend.partials.section-head', [
             'id' => 'packages-title',
-            'eyebrow' => 'হেলথ চেকআপ প্যাকেজ',
-            'title' => 'প্রয়োজন বুঝে <span class="grad">সাশ্রয়ী প্যাকেজ</span>',
-            'sub' => 'একসাথে একাধিক টেস্ট, কম খরচে। প্রতিটি প্যাকেজে কী কী টেস্ট আছে, আগেই দেখে নিন।',
+            'eyebrow' => __('হেলথ চেকআপ প্যাকেজ'),
+            'title' => __('প্রয়োজন বুঝে <span class="grad">সাশ্রয়ী প্যাকেজ</span>'),
+            'sub' => __('একসাথে একাধিক টেস্ট, কম খরচে। প্রতিটি প্যাকেজে কী কী টেস্ট আছে, আগেই দেখে নিন।'),
         ])
 
         <div class="row g-4">
@@ -28,7 +28,7 @@
         </div>
 
         <div class="text-center mt-5 reveal">
-            <a class="btn btn-ghost btn-lg" href="{{ route('site.packages') }}">সব প্যাকেজ দেখুন <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="btn btn-ghost btn-lg" href="{{ route('site.packages') }}">{{ __('সব প্যাকেজ দেখুন') }} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
     </div>
 </section>

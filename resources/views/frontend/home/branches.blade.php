@@ -2,9 +2,9 @@
     <div class="container">
         @include('frontend.partials.section-head', [
             'id' => 'branches-title',
-            'eyebrow' => 'আমাদের শাখা',
-            'title' => 'আপনার <span class="grad">কাছের শাখা</span> খুঁজুন',
-            'sub' => 'ঠিকানা, খোলার সময় ও উপলব্ধ সেবা দেখে নিন।',
+            'eyebrow' => __('আমাদের শাখা'),
+            'title' => __('আপনার <span class="grad">কাছের শাখা</span> খুঁজুন'),
+            'sub' => __('ঠিকানা, খোলার সময় ও উপলব্ধ সেবা দেখে নিন।'),
         ])
 
         <div class="row g-4">
@@ -31,8 +31,8 @@
                                 @endforeach
                             </div>
                             <div class="branch-actions">
-                                <a class="btn btn-primary btn-sm" href="{{ route('site.contact') }}">শাখা খুঁজুন</a>
-                                <a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query={{ urlencode($branch['address']) }}" target="_blank" rel="noopener"><i class="bi bi-sign-turn-right" aria-hidden="true"></i> গুগল ম্যাপ</a>
+                                <a class="btn btn-primary btn-sm" href="{{ route('site.contact') }}">{{ __('শাখা খুঁজুন') }}</a>
+                                <a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query={{ urlencode($branch['address']) }}" target="_blank" rel="noopener"><i class="bi bi-sign-turn-right" aria-hidden="true"></i> {{ __('গুগল ম্যাপ') }}</a>
                             </div>
                         </div>
                     </article>

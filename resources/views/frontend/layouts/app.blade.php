@@ -17,7 +17,7 @@
     ]);
 @endphp
 <!DOCTYPE html>
-<html lang="bn" data-bs-theme="light">
+<html lang="{{ app()->getLocale() }}" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,7 +30,7 @@
     <meta name="theme-color" content="#1557A6">
 
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="bn_BD">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'en' ? 'en_US' : 'bn_BD' }}">
     <meta property="og:site_name" content="{{ $site['name'] }}">
     <meta property="og:title" content="{{ $fullTitle }}">
     <meta property="og:description" content="{{ $metaDescription }}">
@@ -55,8 +55,8 @@
     <script type="application/ld+json">{!! json_encode($organization, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) !!}</script>
     @stack('schema')
 </head>
-<body>
-    <a class="skip-link" href="#main">মূল কনটেন্টে যান</a>
+<body data-msg-form="{{ __('এটি ডেমো ফর্ম। অ্যাডমিন প্যানেলের সঙ্গে যুক্ত হলে কাজ করবে।') }}" data-msg-otp="{{ __('ডেমো: এখানে ওটিপি পাঠানো হবে।') }}">
+    <a class="skip-link" href="#main">{{ __('মূল কনটেন্টে যান') }}</a>
 
     @include('frontend.partials.topbar')
     @include('frontend.partials.navbar')

@@ -2,9 +2,9 @@
     <div class="container">
         @include('frontend.partials.section-head', [
             'id' => 'services-title',
-            'eyebrow' => 'আমাদের সেবা',
-            'title' => 'রক্ত পরীক্ষা থেকে <span class="grad">আধুনিক ইমেজিং</span>',
-            'sub' => 'প্রয়োজনীয় ডায়াগনস্টিক সেবা এক জায়গায়।',
+            'eyebrow' => __('আমাদের সেবা'),
+            'title' => __('রক্ত পরীক্ষা থেকে <span class="grad">আধুনিক ইমেজিং</span>'),
+            'sub' => __('প্রয়োজনীয় ডায়াগনস্টিক সেবা এক জায়গায়।'),
         ])
 
         <div class="bento">
@@ -14,10 +14,10 @@
                     <span class="icon-bubble"><i class="bi {{ $service['icon'] }}" aria-hidden="true"></i></span>
                     <div class="bento-text">
                         <h3>{{ $service['bn'] }}</h3>
-                        <p lang="en" class="bento-en">{{ $service['en'] }}</p>
+                        <p lang="en" class="bento-en alt-lang">{{ $service['en'] }}</p>
                         <p class="bento-desc">{{ $service['desc'] }}</p>
                     </div>
-                    <span class="bento-link">বিস্তারিত <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
+                    <span class="bento-link">{{ __('বিস্তারিত') }} <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
                 </a>
             @endforeach
         </div>

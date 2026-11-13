@@ -14,9 +14,9 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-4 reveal">
-                <span class="eyebrow">সাধারণ প্রশ্ন</span>
-                <h2 class="section-title text-start" id="faq-title">আপনার প্রশ্নের <span class="grad">উত্তর</span></h2>
-                <p class="section-sub text-start">উত্তর না পেলে হটলাইনে কল করুন।</p>
+                <span class="eyebrow">{{ __('সাধারণ প্রশ্ন') }}</span>
+                <h2 class="section-title text-start" id="faq-title">{{ __('আপনার প্রশ্নের') }} <span class="grad">{{ __('উত্তর') }}</span></h2>
+                <p class="section-sub text-start">{{ __('উত্তর না পেলে হটলাইনে কল করুন।') }}</p>
                 <a class="btn btn-primary" href="{{ $site['phone_link'] }}"><i class="bi bi-telephone" aria-hidden="true"></i> {{ $site['phone'] }}</a>
             </div>
 

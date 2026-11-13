@@ -1,18 +1,18 @@
 @php
     $nav = [
-        ['site.home', 'হোম'],
-        ['site.about', 'আমাদের সম্পর্কে'],
-        ['site.tests', 'ডায়াগনস্টিক টেস্ট'],
-        ['site.packages', 'হেলথ প্যাকেজ'],
-        ['site.doctors', 'আমাদের ডাক্তার'],
-        ['site.services', 'আমাদের সেবা'],
-        ['site.contact', 'যোগাযোগ'],
+        ['site.home', __('হোম')],
+        ['site.about', __('আমাদের সম্পর্কে')],
+        ['site.tests', __('ডায়াগনস্টিক টেস্ট')],
+        ['site.packages', __('হেলথ প্যাকেজ')],
+        ['site.doctors', __('আমাদের ডাক্তার')],
+        ['site.services', __('আমাদের সেবা')],
+        ['site.contact', __('যোগাযোগ')],
     ];
 @endphp
 <header class="site-header" id="siteHeader">
-    <nav class="navbar navbar-expand-xl" aria-label="প্রধান মেনু">
+    <nav class="navbar navbar-expand-xl" aria-label="{{ __('প্রধান মেনু') }}">
         <div class="container">
-            <a class="brand" href="{{ route('site.home') }}" aria-label="{{ $site['name'] }} – হোম পেজ">
+            <a class="brand" href="{{ route('site.home') }}" aria-label="{{ __(':name – হোম পেজ', ['name' => $site['name']]) }}">
                 @if ($site['logo'])
                     <img src="{{ $site['logo'] }}" alt="" height="40" width="40" class="brand-logo">
                 @else
@@ -21,7 +21,7 @@
                 <span class="brand-text">{{ $site['name'] }}</span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="মেনু খুলুন">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="{{ __('মেনু খুলুন') }}">
                 <i class="bi bi-list" aria-hidden="true"></i>
             </button>
 
@@ -35,8 +35,8 @@
                 </ul>
 
                 <div class="nav-cta">
-                    <a class="btn btn-ghost" href="{{ route('site.report') }}"><i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i> রিপোর্ট ডাউনলোড</a>
-                    <a class="btn btn-primary" href="{{ route('site.appointment') }}"><i class="bi bi-calendar2-check" aria-hidden="true"></i> অ্যাপয়েন্টমেন্ট নিন</a>
+                    <a class="btn btn-ghost" href="{{ route('site.report') }}"><i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i> {{ __('রিপোর্ট ডাউনলোড') }}</a>
+                    <a class="btn btn-primary" href="{{ route('site.appointment') }}"><i class="bi bi-calendar2-check" aria-hidden="true"></i> {{ __('অ্যাপয়েন্টমেন্ট নিন') }}</a>
                 </div>
             </div>
         </div>

@@ -14,8 +14,8 @@
 
     <ul class="meta-list text-start">
         <li><i class="bi bi-calendar3" aria-hidden="true"></i> {{ $doctor['schedule'] }}</li>
-        <li><i class="bi bi-wallet2" aria-hidden="true"></i> ভিজিট: ৳ {{ $doctor['fee'] }}</li>
+        <li><i class="bi bi-wallet2" aria-hidden="true"></i> {{ __('ভিজিট:') }} ৳ {{ $doctor['fee'] }}</li>
     </ul>
 
-    <a href="{{ route('site.appointment', ['doctor' => 1]) }}" class="btn btn-primary w-100">অ্যাপয়েন্টমেন্ট নিন</a>
+    <a href="{{ route('site.appointment', ['doctor' => 1]) }}" class="btn btn-primary w-100">{{ __('অ্যাপয়েন্টমেন্ট নিন') }}</a>
 </article>

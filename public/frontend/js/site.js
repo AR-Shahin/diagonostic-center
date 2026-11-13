@@ -79,7 +79,7 @@
                 wrap.hidden = !visible;
                 if (visible) shown += 1;
             });
-            if (count) count.textContent = shown + 'টি ফলাফল';
+            if (count) count.textContent = (count.dataset.template || ':n').replace(':n', shown);
             if (empty) empty.hidden = shown !== 0;
         };
 
@@ -113,10 +113,10 @@
     document.querySelectorAll('[data-demo-form]').forEach((form) => {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
-            showToast('এটি ডেমো ফর্ম। অ্যাডমিন প্যানেলের সঙ্গে যুক্ত হলে কাজ করবে।');
+            showToast(document.body.dataset.msgForm || '');
         });
     });
     document.querySelectorAll('[data-demo-action]').forEach((btn) => {
-        btn.addEventListener('click', () => showToast('ডেমো: এখানে ওটিপি পাঠানো হবে।'));
+        btn.addEventListener('click', () => showToast(document.body.dataset.msgOtp || ''));
     });
 })();

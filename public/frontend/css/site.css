@@ -532,6 +532,9 @@ legend.form-label { float: none; width: auto; padding: 0; }
 .map-ph i { font-size: 3rem; }
 .map-ph p { margin: 0; color: rgba(255, 255, 255, .9); }
 
+/* English mode hides the secondary (duplicate) English captions */
+html[lang="en"] .alt-lang { display: none !important; }
+
 /* ---------- Toast + motion ---------- */
 .toast-pill { position: fixed; left: 50%; bottom: 1.5rem; z-index: 3000; max-width: calc(100vw - 2rem); padding: .9rem 1.5rem; color: #fff; font-weight: 500; background: var(--heading); border-radius: 999px; box-shadow: var(--shadow-lg); opacity: 0; transform: translate(-50%, 1.5rem); pointer-events: none; transition: opacity .4s var(--ease), transform .4s var(--ease); }
 .toast-pill.show { opacity: 1; transform: translate(-50%, 0); }

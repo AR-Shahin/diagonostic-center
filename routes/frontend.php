@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\PageController;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 | Route names are prefixed with "site." so they never clash with the admin
 | ("admin.") or the Breeze user ("login", "dashboard") routes.
 */
-Route::name('site.')->controller(PageController::class)->group(function () {
+Route::middleware(SetLocale::class)->name('site.')->controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('home');
     Route::get('about', 'about')->name('about');
     Route::get('tests', 'tests')->name('tests');

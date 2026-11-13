@@ -2,9 +2,9 @@
     <div class="container">
         @include('frontend.partials.section-head', [
             'id' => 'reviews-title',
-            'eyebrow' => 'রোগীদের মতামত',
-            'title' => 'যাঁরা আমাদের <span class="grad">সেবা নিয়েছেন</span>',
-            'sub' => 'সম্মতিসহ প্রকাশিত রোগীদের অভিজ্ঞতা।',
+            'eyebrow' => __('রোগীদের মতামত'),
+            'title' => __('যাঁরা আমাদের <span class="grad">সেবা নিয়েছেন</span>'),
+            'sub' => __('সম্মতিসহ প্রকাশিত রোগীদের অভিজ্ঞতা।'),
         ])
 
         <div class="row g-4">
@@ -12,7 +12,7 @@
                 <div class="col-md-6 col-lg-4 reveal" style="--d:{{ $loop->index * 0.07 }}s">
                     <figure class="card-soft review-card">
                         <i class="bi bi-quote review-quote" aria-hidden="true"></i>
-                        <div class="stars" role="img" aria-label="{{ $review['rating'] }} তারকা">
+                        <div class="stars" role="img" aria-label="{{ __(':n তারকা', ['n' => $review['rating']]) }}">
                             @for ($i = 1; $i <= 5; $i++)
                                 <i class="bi {{ $i <= $review['rating'] ? 'bi-star-fill' : 'bi-star' }}" aria-hidden="true"></i>
                             @endfor
@@ -28,6 +28,6 @@
         </div>
 
         {{-- Google Reviews: connect the Places API / embed here when available --}}
-        <p class="text-center mt-4 mb-0 reveal"><a class="link-arrow" href="#">গুগল রিভিউ দেখুন <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a></p>
+        <p class="text-center mt-4 mb-0 reveal"><a class="link-arrow" href="#">{{ __('গুগল রিভিউ দেখুন') }} <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a></p>
     </div>
 </section>
