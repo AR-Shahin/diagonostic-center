@@ -8,10 +8,12 @@ use App\Models\Invoice;
 use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\Setting;
+use App\Services\Lab\LabService;
 use App\Services\Patients\PatientAccounts;
 use App\Support\BranchAccess;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class InvoiceService
@@ -75,6 +77,8 @@ class InvoiceService
                 'status' => 'unpaid',
                 'delivery_at' => now()->addHours($calc['delivery_hours']),
                 'note' => $data['note'] ?? null,
+                'report_pin' => (string) random_int(100000, 999999),
+                'report_token' => Str::random(32),
             ]);
 
             $sort = 0;
@@ -84,6 +88,8 @@ class InvoiceService
                     $invoice->items()->create($this->itemRow($child, ++$sort) + ['parent_id' => $parent->id]);
                 }
             }
+
+            app(LabService::class)->ensureSamples($invoice);
 
             if ($paidNow > 0) {
                 $this->addPayment($invoice, $paidNow, $data['payment_method'] ?? 'cash', $data['transaction_ref'] ?? null, $by, 'Paid at billing');
@@ -136,6 +142,7 @@ class InvoiceService
                 'status' => 'cancelled', 'cancelled_at' => now(), 'cancelled_by' => $by->id, 'cancel_reason' => $reason,
             ])->save();
             $invoice->items()->update(['lab_status' => 'cancelled']);
+            $invoice->samples()->where('status', '!=', 'rejected')->update(['status' => 'rejected', 'rejected_reason' => 'Bill cancelled']);
             $invoice->refreshPaymentTotals();
 
             return $refund;

@@ -32,6 +32,12 @@
                                 </li>
                             @endforeach
                         </ul>
+                        @php
+                            $readyCount = $invoice->reportableItems()->count();
+                        @endphp
+                        @if ($readyCount && $invoice->canReleaseReport(true))
+                            <a class="btn btn-primary btn-lg w-100 mt-3" href="{{ route('portal.report', $invoice) }}"><i class="bi bi-file-earmark-medical" aria-hidden="true"></i> {{ __('রিপোর্ট দেখুন (:n টি টেস্ট)', ['n' => $readyCount]) }}</a>
+                        @endif
                         <p class="note"><i class="bi bi-clock" aria-hidden="true"></i>
                             {{ __('রিপোর্ট প্রস্তুত হওয়ার সম্ভাব্য সময়: :t', ['t' => $invoice->delivery_at?->format('d M Y, h:i A')]) }}
                             @if (! $invoice->canReleaseReport(true) && $invoice->hasDue()) {{ __('বকেয়া পরিশোধের পর রিপোর্ট দেখা যাবে।') }} @endif

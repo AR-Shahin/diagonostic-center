@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             CatalogPermissionSeeder::class,
             BillingPermissionSeeder::class,
+            LabPermissionSeeder::class,
         ]);
 
         if (app()->isLocal()) {

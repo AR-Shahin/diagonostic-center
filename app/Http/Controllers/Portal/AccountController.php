@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Http\Controllers\Admin\LabController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Portal\Concerns\RendersSitePage;
 use App\Models\Invoice;
@@ -22,6 +23,7 @@ class AccountController extends Controller
         $patients = $user->patients()->get();
         $invoices = Invoice::query()->whereIn('patient_id', $patients->pluck('id'))
             ->with(['branch:id,name_en,name_bn', 'labItems:id,invoice_id,name,lab_status'])
+            ->withCount(['labItems as ready_count' => fn ($q) => $q->whereIn('lab_status', ['ready', 'delivered'])])
             ->latest('id')->get();
 
         return $this->page('frontend.portal.dashboard', [
@@ -38,6 +40,16 @@ class AccountController extends Controller
         $invoice->load(['billedItems.children', 'payments', 'branch', 'referrer']);
 
         return $this->page('frontend.portal.invoice', ['invoice' => $invoice]);
+    }
+
+    public function report(Request $request, Invoice $invoice)
+    {
+        abort_unless($invoice->patient?->user_id === $request->user('web')->id, 404);
+        if (! $invoice->canReleaseReport(portal: true) || $invoice->reportableItems()->doesntExist()) {
+            return redirect()->route('portal.invoice', $invoice);
+        }
+
+        return view('reports.document', LabController::reportData($invoice, [], ['backUrl' => route('portal.invoice', $invoice)]));
     }
 
     public function editPassword()

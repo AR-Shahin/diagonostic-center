@@ -21,7 +21,7 @@
                 </div>
                 <hr>
 
-                <form action="{{ route("admin.admins.store") }}" method="POST" >
+                <form action="{{ route("admin.admins.store") }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -57,6 +57,18 @@
                         </div>
                         <div class="col-md-6">
                             <x-admin.input name="max_discount_percent" label="Max discount without approval (%)" type="number" step="0.01" min="0" max="100" default="0" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12"><hr><h6 class="text-muted">For lab reports (consultants / pathologists)</h6></div>
+                        <div class="col-md-4">
+                            <x-admin.input name="qualification" label="Qualification" placeholder="MBBS, M.Phil (Pathology)"  />
+                        </div>
+                        <div class="col-md-4">
+                            <x-admin.input name="designation" label="Designation" placeholder="Consultant Pathologist"  />
+                        </div>
+                        <div class="col-md-4">
+                            <x-admin.input name="signature" label="Signature image (PNG, transparent background)" type="file" accept="image/png,image/jpeg" />
                         </div>
                     </div>
                     <x-form.submit/>

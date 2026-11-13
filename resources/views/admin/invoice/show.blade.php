@@ -15,6 +15,9 @@
     <x-admin.page-header :title="$invoice->invoice_no" icon="fas fa-file-invoice" :subtitle="$invoice->created_at->format('d M Y, h:i A').' · '.$invoice->branch->name_en.' · by '.($invoice->creator->name ?? '—')">
         <span class="align-self-center">{!! $invoice->statusBadge() !!}</span>
         <a href="{{ route('admin.invoices.print', $invoice) }}" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="fas fa-print me-1"></i> Print invoice</a>
+        @if (in_array('lab-view', $permissions) && ! $invoice->isCancelled())
+            <a href="{{ route('admin.lab.invoice', $invoice) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-microscope me-1"></i> Lab & report</a>
+        @endif
         @if ($invoice->hasDue() && in_array('invoice-collect', $permissions))
             <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#collectModal"><i class="fas fa-hand-holding-usd me-1"></i> Collect due</button>
         @endif

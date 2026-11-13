@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @section('title', __('অনলাইনে রিপোর্ট ডাউনলোড'))
-@section('description', __('মোবাইল নম্বর ও ওটিপি অথবা ইনভয়েস নম্বর ও রিপোর্ট পিন দিয়ে আপনার ডায়াগনস্টিক রিপোর্ট নিরাপদে ডাউনলোড করুন।'))
+@section('description', __('ইনভয়েস নম্বর ও রিপোর্ট পিন অথবা মোবাইল নম্বর দিয়ে লগইন করে আপনার ডায়াগনস্টিক রিপোর্ট নিরাপদে দেখুন ও ডাউনলোড করুন।'))
 
 @section('content')
     @include('frontend.partials.page-header', [
@@ -17,34 +17,28 @@
                 <div class="col-lg-7 reveal">
                     <div class="form-card">
                         <div class="segmented segmented-tabs" role="tablist" aria-label="{{ __('রিপোর্ট খোলার পদ্ধতি') }}">
-                            <button class="active" id="tab-otp" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#pane-otp" aria-controls="pane-otp" aria-selected="true">{{ __('মোবাইল ও ওটিপি') }}</button>
-                            <button id="tab-invoice" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#pane-invoice" aria-controls="pane-invoice" aria-selected="false">{{ __('ইনভয়েস ও পিন') }}</button>
+                            <button class="active" id="tab-invoice" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#pane-invoice" aria-controls="pane-invoice" aria-selected="true">{{ __('ইনভয়েস ও পিন') }}</button>
+                            <button id="tab-otp" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#pane-otp" aria-controls="pane-otp" aria-selected="false">{{ __('মোবাইল ও পাসওয়ার্ড') }}</button>
                         </div>
 
                         <div class="tab-content mt-4">
-                            <div class="tab-pane fade show active" id="pane-otp" role="tabpanel" aria-labelledby="tab-otp" tabindex="0">
-                                <form data-demo-form>
-                                    <label class="form-label" for="rpPhone">{{ __('নিবন্ধিত মোবাইল নম্বর') }}</label>
-                                    <div class="input-action">
-                                        <input class="form-control" id="rpPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX" required>
-                                        <button class="btn btn-ghost" type="button" data-demo-action>{{ __('ওটিপি পাঠান') }}</button>
-                                    </div>
-                                    <label class="form-label mt-3" for="rpOtp">{{ __('ওটিপি কোড') }}</label>
-                                    <input class="form-control otp-input" id="rpOtp" name="otp" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••" required>
-                                    <button class="btn btn-primary btn-lg w-100 mt-4" type="submit"><i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i> {{ __('রিপোর্ট দেখুন') }}</button>
-                                </form>
+                            <div class="tab-pane fade" id="pane-otp" role="tabpanel" aria-labelledby="tab-otp" tabindex="0">
+                                <p>{{ __('মোবাইল নম্বর দিয়ে আপনার অ্যাকাউন্টে লগইন করুন। সেখানে আপনার ও পরিবারের সব রিপোর্ট পাবেন। প্রথমবার পাসওয়ার্ড হিসেবে আপনার মোবাইল নম্বরটিই দিন।') }}</p>
+                                <a class="btn btn-primary btn-lg w-100" href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> {{ __('লগইন করুন') }}</a>
                             </div>
 
-                            <div class="tab-pane fade" id="pane-invoice" role="tabpanel" aria-labelledby="tab-invoice" tabindex="0">
-                                <form data-demo-form>
+                            <div class="tab-pane fade show active" id="pane-invoice" role="tabpanel" aria-labelledby="tab-invoice" tabindex="0">
+                                <form method="POST" action="{{ route('report.lookup') }}" novalidate>
+                                    @csrf
+                                    @error('invoice')<div class="note mt-0 mb-3 text-danger"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>@enderror
                                     <div class="row g-3">
                                         <div class="col-sm-6">
                                             <label class="form-label" for="rpInvoice">{{ __('ইনভয়েস নম্বর') }}</label>
-                                            <input class="form-control" id="rpInvoice" name="invoice" type="text" placeholder="INV-000000" required>
+                                            <input class="form-control" id="rpInvoice" name="invoice" type="text" value="{{ old('invoice', request('invoice')) }}" placeholder="INV-MAIN-2611-00001" autocomplete="off" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="form-label" for="rpPin">{{ __('রিপোর্ট পিন') }}</label>
-                                            <input class="form-control" id="rpPin" name="pin" type="text" placeholder="{{ __('ইনভয়েসে দেওয়া পিন') }}" required>
+                                            <input class="form-control" id="rpPin" name="pin" type="text" inputmode="numeric" maxlength="8" placeholder="{{ __('ইনভয়েসে দেওয়া পিন') }}" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <button class="btn btn-primary btn-lg w-100 mt-4" type="submit"><i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i> {{ __('রিপোর্ট দেখুন') }}</button>

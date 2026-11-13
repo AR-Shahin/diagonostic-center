@@ -63,7 +63,7 @@
     <div class="notice">
         Please bring this invoice when collecting your report.
         @if ($invoice->hasDue() && ! $invoice->canReleaseReport()) Reports are delivered after the due is paid. @endif
-        Online report: use your mobile number or invoice number on our website.
+        <b>Online report:</b> {{ url('/download-report') }} · Invoice no + PIN <b style="font-size:13px;letter-spacing:1px">{{ $invoice->report_pin }}</b>, or log in with your mobile number.
     </div>
 
     <div class="foot">

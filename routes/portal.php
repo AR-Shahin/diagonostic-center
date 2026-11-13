@@ -21,6 +21,7 @@ Route::middleware(SetLocale::class)->prefix('account')->group(function () {
         Route::middleware(EnsurePortalPasswordChanged::class)->group(function () {
             Route::get('/', [AccountController::class, 'dashboard'])->name('dashboard');
             Route::get('invoices/{invoice}', [AccountController::class, 'invoice'])->name('invoice');
+            Route::get('invoices/{invoice}/report', [AccountController::class, 'report'])->name('report');
         });
     });
 });

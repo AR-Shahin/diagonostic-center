@@ -57,6 +57,9 @@
                         @else
                             <span class="tag tag-teal">{{ __('পরিশোধিত') }}</span>
                         @endif
+                        @if ($inv->ready_count && ! $inv->isCancelled())
+                            <span class="tag tag-blue"><i class="bi bi-file-earmark-medical" aria-hidden="true"></i> {{ __('রিপোর্ট প্রস্তুত') }}</span>
+                        @endif
                     </div>
                     <i class="bi bi-chevron-right" aria-hidden="true"></i>
                 </a>

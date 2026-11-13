@@ -73,6 +73,22 @@ class Invoice extends Model
         return $this->hasMany(InvoiceItem::class)->whereIn('item_type', ['test', 'package_test'])->orderBy('sort');
     }
 
+    public function samples(): HasMany
+    {
+        return $this->hasMany(Sample::class)->orderBy('id');
+    }
+
+    /** Lab items whose report is verified (ready or already handed over). */
+    public function reportableItems(): HasMany
+    {
+        return $this->labItems()->whereIn('lab_status', ['ready', 'delivered']);
+    }
+
+    public function verifyUrl(): string
+    {
+        return route('report.verify', $this->report_token);
+    }
+
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class)->latest('id');

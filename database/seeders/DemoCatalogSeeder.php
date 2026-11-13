@@ -76,7 +76,6 @@ class DemoCatalogSeeder extends Seeder
             'citrate' => ['Blood (Citrate)', 'রক্ত (সাইট্রেট)', 'Citrate tube – light blue cap'],
             'urine' => ['Urine', 'প্রস্রাব', 'Sterile urine container'],
             'stool' => ['Stool', 'মল', 'Stool container'],
-            'none' => ['No sample (imaging)', 'নমুনা লাগে না (ইমেজিং)', null],
         ];
         $ids = [];
         foreach ($rows as $key => [$en, $bn, $container]) {
@@ -102,7 +101,7 @@ class DemoCatalogSeeder extends Seeder
         $make = function (array $a) use ($dept, $sample) {
             return LabTest::create([
                 'department_id' => $dept[$a['dept']],
-                'sample_type_id' => $sample[$a['sample']] ?? null,
+                'sample_type_id' => $a['sample'] ? $sample[$a['sample']] : null,
                 'code' => $a['code'], 'name_en' => $a['en'], 'name_bn' => $a['bn'],
                 'slug' => Str::slug($a['en']), 'price' => $a['price'], 'offer_price' => $a['offer'] ?? null,
                 'cost' => $a['cost'] ?? 0, 'report_type' => $a['type'] ?? 'parameter',
@@ -195,7 +194,7 @@ class DemoCatalogSeeder extends Seeder
             ['USGWA', 'ultrasonography', 'USG Whole Abdomen', 'আল্ট্রাসোনোগ্রাম (পুরো পেট)', 1500, 2, '6 hours fasting, full bladder', '৬ ঘণ্টা উপবাস, মূত্রথলি পূর্ণ রাখুন', true],
         ];
         foreach ($imaging as $i => [$code, $d, $en, $bn, $price, $hours, $pEn, $pBn, $popular]) {
-            $t[$code] = $make(['dept' => $d, 'sample' => 'none', 'code' => $code, 'en' => $en, 'bn' => $bn, 'price' => $price, 'hours' => $hours, 'type' => 'template', 'prep_en' => $pEn, 'prep_bn' => $pBn, 'popular' => $popular, 'sort' => 11 + $i]);
+            $t[$code] = $make(['dept' => $d, 'sample' => null, 'code' => $code, 'en' => $en, 'bn' => $bn, 'price' => $price, 'hours' => $hours, 'type' => 'template', 'prep_en' => $pEn, 'prep_bn' => $pBn, 'popular' => $popular, 'sort' => 11 + $i]);
             $t[$code]->reportTemplates()->create([
                 'name' => 'Normal', 'is_default' => true,
                 'body' => '<p><b>Findings:</b></p><p>[Write findings]</p><p><b>Impression:</b></p><p>[Write impression]</p>',

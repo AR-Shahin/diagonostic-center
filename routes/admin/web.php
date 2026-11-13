@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\LabController;
 use App\Http\Controllers\Admin\LabTestController;
 use App\Http\Controllers\Admin\ManualController;
 use App\Http\Controllers\Admin\PackageController;
@@ -88,5 +89,23 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
         Route::get('{invoice}/print', 'print')->name('print');
         Route::post('{invoice}/collect', 'collect')->name('collect');
         Route::post('{invoice}/cancel', 'cancel')->name('cancel');
+    });
+
+    // ---- Phase 3: lab
+    Route::controller(LabController::class)->prefix('lab')->name('lab.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('scan', 'scan')->name('scan');
+        Route::get('invoices/{invoice}', 'invoice')->name('invoice');
+        Route::get('invoices/{invoice}/labels', 'labels')->name('labels');
+        Route::get('invoices/{invoice}/report', 'report')->name('report');
+        Route::post('invoices/{invoice}/verify-all', 'verifyAll')->name('verify-all');
+        Route::post('invoices/{invoice}/deliver', 'deliver')->name('deliver');
+        Route::post('samples/{sample}/collect', 'collect')->name('collect');
+        Route::post('samples/{sample}/receive', 'receive')->name('receive');
+        Route::post('samples/{sample}/reject', 'reject')->name('reject');
+        Route::get('items/{item}', 'edit')->name('result');
+        Route::post('items/{item}', 'save')->name('save');
+        Route::post('items/{item}/verify', 'verify')->name('verify');
+        Route::post('items/{item}/amend', 'amend')->name('amend');
     });
 });

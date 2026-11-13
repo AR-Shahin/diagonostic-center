@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helper\File\File;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Branch;
@@ -74,6 +75,9 @@ class AdminController extends Controller
             'role_id' => ['required', 'exists:roles,id'],
             'branch_id' => ['nullable', 'exists:branches,id'],
             'max_discount_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'designation' => ['nullable', 'string', 'max:255'],
+            'qualification' => ['nullable', 'string', 'max:255'],
+            'signature' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:1024'],
         ]);
         try {
             $admin = new Admin;
@@ -83,7 +87,10 @@ class AdminController extends Controller
                 'password' => bcrypt($request->password),
                 'branch_id' => $request->input('branch_id'),
                 'max_discount_percent' => (float) $request->input('max_discount_percent', 0),
+                'designation' => $request->input('designation'),
+                'qualification' => $request->input('qualification'),
             ]);
+            $this->storeSignature($admin, $request);
             $message = 'Admin Created!';
             $admin->save();
 
@@ -104,6 +111,9 @@ class AdminController extends Controller
             'email' => ['required', 'string', "unique:admins,email,$admin->id"],
             'branch_id' => ['nullable', 'exists:branches,id'],
             'max_discount_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'designation' => ['nullable', 'string', 'max:255'],
+            'qualification' => ['nullable', 'string', 'max:255'],
+            'signature' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:1024'],
         ]);
         try {
             $admin->fill([
@@ -111,7 +121,10 @@ class AdminController extends Controller
                 'email' => $request->email,
                 'branch_id' => $request->input('branch_id'),
                 'max_discount_percent' => (float) $request->input('max_discount_percent', 0),
+                'designation' => $request->input('designation'),
+                'qualification' => $request->input('qualification'),
             ]);
+            $this->storeSignature($admin, $request);
             $message = 'Admin Updated!';
             $admin->save();
 
@@ -136,6 +149,17 @@ class AdminController extends Controller
             return redirect()->back();
         } catch (Exception $e) {
             $this->logError($e->getMessage());
+        }
+    }
+
+    /** Signature image printed on lab reports this person verifies. */
+    private function storeSignature(Admin $admin, Request $request): void
+    {
+        if ($request->hasFile('signature')) {
+            if ($admin->signature) {
+                File::deleteFile($admin->signature);
+            }
+            $admin->signature = File::upload($request->file('signature'), 'signatures');
         }
     }
 }

@@ -31,20 +31,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (Request $request, AuthenticationException $exception) {
-            if (request()->expectsJson()) {
-                return Response()->json(['error' => 'UnAuthorized'], 401);
+        // Not logged in: send admins to the admin login, patients to the website login.
+        $exceptions->render(function (AuthenticationException $exception, Request $request) {
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'Unauthorized'], 401);
             }
 
-            $guard = data_get($exception->guards(), 0);
-            switch ($guard) {
-                case 'admin':
-                    $login = 'admin.login';
-                    break;
-                default:
-                    $login = 'login';
-                    break;
-            }
+            $login = data_get($exception->guards(), 0) === 'admin' ? 'admin.login' : 'login';
 
             return redirect()->guest(route($login));
         });

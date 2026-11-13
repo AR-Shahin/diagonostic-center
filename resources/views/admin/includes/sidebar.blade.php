@@ -78,6 +78,14 @@
           </li>
           @endforeach
           @endif
+          @if (in_array('lab-view', $permissions))
+          <li class="nav-header">LAB</li>
+          <li class="nav-item">
+            <a href="{{ route('admin.lab.index') }}" @class(['nav-link', 'active' => request()->routeIs('admin.lab.*')])>
+              <i class="nav-icon fas fa-microscope"></i><p>Lab work list</p>
+            </a>
+          </li>
+          @endif
           @php
               $catalogMenu = [
                   ['admin.lab-tests.*', 'admin.lab-tests.index', 'labtest-view', 'Tests'],
