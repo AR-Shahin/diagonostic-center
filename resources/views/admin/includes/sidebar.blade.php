@@ -78,6 +78,25 @@
           </li>
           @endforeach
           @endif
+          @php
+              $accountsMenu = [
+                  ['admin.commission.*', 'admin.commission.index', 'commission-view', 'fas fa-hand-holding-usd', 'Referral commission'],
+                  ['admin.expenses.*', 'admin.expenses.index', 'expense-view', 'fas fa-receipt', 'Expenses'],
+                  ['admin.cash-closings.*', 'admin.cash-closings.index', 'cashclosing-create', 'fas fa-cash-register', 'Cash closing'],
+                  ['admin.reports.*', 'admin.reports.index', 'report-view', 'fas fa-chart-bar', 'Reports'],
+              ];
+              $visibleAccounts = array_filter($accountsMenu, fn ($m) => in_array($m[2], $permissions));
+          @endphp
+          @if ($visibleAccounts)
+          <li class="nav-header">ACCOUNTS &amp; REPORTS</li>
+          @foreach ($visibleAccounts as [$pattern, $route, $perm, $icon, $label])
+          <li class="nav-item">
+            <a href="{{ route($route) }}" @class(['nav-link', 'active' => request()->routeIs($pattern)])>
+              <i class="nav-icon {{ $icon }}"></i><p>{{ $label }}</p>
+            </a>
+          </li>
+          @endforeach
+          @endif
           @if (in_array('lab-view', $permissions))
           <li class="nav-header">LAB</li>
           <li class="nav-item">

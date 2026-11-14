@@ -5,5 +5,5 @@
     </div>
     <!-- Default to the left -->
 
-    <strong>Copyright &copy; 2023-{{ date('Y') }} <a href="https://www.facebook.com/arshahin201"> {{ $website->name }}</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2023-{{ date('Y') }} <a href="https://www.facebook.com/arshahin201"> {{ $website?->name ?? config('app.name') }}</a>.</strong> All rights reserved.
   </footer>

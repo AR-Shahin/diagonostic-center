@@ -3,7 +3,7 @@
 @section("app_content")
     <div class="login-box">
        <div class="login-logo">
-          <a href="../../index2.html">{{$website->name}}</a>
+          <a href="../../index2.html">{{ $website?->name ?? config('app.name') }}</a>
        </div>
        <!-- /.login-logo -->
        <div class="card">

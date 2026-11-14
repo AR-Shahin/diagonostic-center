@@ -73,6 +73,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceItem::class)->whereIn('item_type', ['test', 'package_test'])->orderBy('sort');
     }
 
+    public function commissionEntries(): HasMany
+    {
+        return $this->hasMany(CommissionEntry::class);
+    }
+
     public function samples(): HasMany
     {
         return $this->hasMany(Sample::class)->orderBy('id');

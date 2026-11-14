@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Department;
 use App\Models\Referrer;
+use App\Models\ReferrerRate;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,5 +26,11 @@ class DemoReferrerSeeder extends Seeder
             ]);
         }
         DB::table('number_sequences')->updateOrInsert(['key' => 'REFERRER'], ['last_number' => count($rows)]);
+
+        // Example default commission: 30% on everything, 15% on imaging (owner changes this under Accounts → Referral commission).
+        ReferrerRate::create(['type' => 'percent', 'value' => 30]);
+        foreach (Department::whereIn('slug', ['radiology', 'ultrasonography', 'cardiology'])->pluck('id') as $id) {
+            ReferrerRate::create(['department_id' => $id, 'type' => 'percent', 'value' => 15]);
+        }
     }
 }

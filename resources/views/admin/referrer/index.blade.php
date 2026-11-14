@@ -7,7 +7,7 @@
 @endpush
 
 @section('master_content')
-    <x-admin.page-header title="Referrers" icon="fas fa-user-md" subtitle="Doctors, RMPs and agents who send patients. Shown as “Ref. by” on the invoice; commission rates come in a later phase.">
+    <x-admin.page-header title="Referrers" icon="fas fa-user-md" subtitle="Doctors, RMPs and agents who send patients. Shown as “Ref. by” on the invoice; set commission rates and pay them from the buttons on each row.">
         @if (in_array('referrer-create', $permissions))
             <button class="btn btn-sm btn-success" data-crud-create data-action="{{ route('admin.referrers.store') }}" data-title="Add referrer"><i class="fas fa-plus me-1"></i> Add referrer</button>
         @endif

@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\Setting;
+use App\Services\Accounts\CommissionService;
 use App\Services\Lab\LabService;
 use App\Services\Patients\PatientAccounts;
 use App\Support\BranchAccess;
@@ -95,6 +96,7 @@ class InvoiceService
                 $this->addPayment($invoice, $paidNow, $data['payment_method'] ?? 'cash', $data['transaction_ref'] ?? null, $by, 'Paid at billing');
             }
             $invoice->refreshPaymentTotals();
+            app(CommissionService::class)->accrueIfDue($invoice);
 
             return $invoice;
         });
@@ -115,6 +117,7 @@ class InvoiceService
             $invoice = Invoice::whereKey($invoice->id)->lockForUpdate()->first();
             $payment = $this->addPayment($invoice, $amount, $method, $reference, $by, $note ?: 'Due collection');
             $invoice->refreshPaymentTotals();
+            app(CommissionService::class)->accrueIfDue($invoice);
 
             return $payment;
         });
@@ -141,6 +144,7 @@ class InvoiceService
             $invoice->forceFill([
                 'status' => 'cancelled', 'cancelled_at' => now(), 'cancelled_by' => $by->id, 'cancel_reason' => $reason,
             ])->save();
+            app(CommissionService::class)->reverse($invoice, 'Bill cancelled: '.$reason);
             $invoice->items()->update(['lab_status' => 'cancelled']);
             $invoice->samples()->where('status', '!=', 'rejected')->update(['status' => 'rejected', 'rejected_reason' => 'Bill cancelled']);
             $invoice->refreshPaymentTotals();

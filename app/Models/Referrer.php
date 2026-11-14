@@ -24,6 +24,27 @@ class Referrer extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function rates(): HasMany
+    {
+        return $this->hasMany(ReferrerRate::class);
+    }
+
+    public function commissionEntries(): HasMany
+    {
+        return $this->hasMany(CommissionEntry::class);
+    }
+
+    public function payouts(): HasMany
+    {
+        return $this->hasMany(CommissionPayout::class);
+    }
+
+    /** Earned but not yet paid out. */
+    public function unpaidCommission(): float
+    {
+        return (float) $this->commissionEntries()->whereNull('payout_id')->sum('amount');
+    }
+
     /** "Dr. Name, MBBS" style label for invoices. */
     public function displayName(): string
     {

@@ -26,7 +26,7 @@ class ReferrerController extends Controller
                 ->editColumn('type', fn (Referrer $r) => e(Referrer::TYPES[$r->type] ?? $r->type))
                 ->addColumn('commission', fn (Referrer $r) => $this->statusBadge($r->commission_enabled, 'Yes', 'No'))
                 ->addColumn('state', fn (Referrer $r) => $this->statusBadge($r->status))
-                ->addColumn('actions', fn (Referrer $r) => $this->rowActions(
+                ->addColumn('actions', fn (Referrer $r) => $this->commissionLinks($r).$this->rowActions(
                     'referrer', route('admin.referrers.destroy', $r), route('admin.referrers.update', $r),
                     $r->only(['type', 'name', 'degree', 'organisation', 'mobile', 'address', 'commission_enabled', 'status']), $r->name
                 ))
@@ -77,6 +77,19 @@ class ReferrerController extends Controller
         return response()->json($rows->map(fn (Referrer $r) => [
             'id' => $r->id, 'label' => $r->displayName(), 'meta' => trim(($r->organisation ?? '').' '.($r->mobile ?? '')),
         ]));
+    }
+
+    private function commissionLinks(Referrer $r): string
+    {
+        $links = '';
+        if ($this->can('commission-view')) {
+            $links .= '<a class="btn btn-sm btn-outline-primary me-1" href="'.route('admin.commission.statement', $r).'" title="Commission statement"><i class="fas fa-file-invoice-dollar"></i></a>';
+        }
+        if ($this->can('commission-rates')) {
+            $links .= '<a class="btn btn-sm btn-outline-secondary me-1" href="'.route('admin.commission.rates', ['referrer' => $r->id]).'" title="Commission rates"><i class="fas fa-percent"></i></a>';
+        }
+
+        return $links;
     }
 
     private function validated(Request $request): array

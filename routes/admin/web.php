@@ -4,9 +4,12 @@ use App\Helper\Trait\Helper;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BusinessSettingController;
+use App\Http\Controllers\Admin\CashClosingController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommissionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\LabController;
 use App\Http\Controllers\Admin\LabTestController;
@@ -15,6 +18,7 @@ use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ReferrerController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SampleTypeController;
 use App\Http\Controllers\Admin\SettingController;
@@ -108,4 +112,24 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
         Route::post('items/{item}/verify', 'verify')->name('verify');
         Route::post('items/{item}/amend', 'amend')->name('amend');
     });
+
+    // ---- Phase 5: commission & accounts
+    Route::controller(CommissionController::class)->prefix('commission')->name('commission.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('rates', 'rates')->name('rates');
+        Route::post('rates', 'saveRate')->name('rates.save');
+        Route::delete('rates/{rate}', 'deleteRate')->name('rates.delete');
+        Route::get('referrers/{referrer}', 'statement')->name('statement');
+        Route::post('referrers/{referrer}/pay', 'pay')->name('pay');
+        Route::get('payouts/{payout}', 'voucher')->name('voucher');
+    });
+    Route::post('expenses/categories', [ExpenseController::class, 'storeCategory'])->name('expenses.categories.store');
+    Route::post('expenses/categories/{category}/toggle', [ExpenseController::class, 'toggleCategory'])->name('expenses.categories.toggle');
+    Route::resource('expenses', ExpenseController::class)->only(['index', 'store', 'update', 'destroy']);
+    // ---- Phase 6: reports
+    Route::get('reports/{type?}', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/{type}/export', [ReportController::class, 'export'])->name('reports.export');
+    Route::get('cash-closings', [CashClosingController::class, 'index'])->name('cash-closings.index');
+    Route::post('cash-closings', [CashClosingController::class, 'store'])->name('cash-closings.store');
+    Route::post('cash-closings/{closing}/verify', [CashClosingController::class, 'verify'])->name('cash-closings.verify');
 });
