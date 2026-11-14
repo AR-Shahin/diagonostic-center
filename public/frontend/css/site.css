@@ -285,7 +285,7 @@ a { text-underline-offset: .2em; }
 
 /* ---------- Stats ---------- */
 .stats-wrap { position: relative; z-index: 2; margin-top: -3.75rem; }
-.stats-card { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 1.6rem 0; background: rgba(255, 255, 255, .92); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); }
+.stats-card { display: grid; grid-template-columns: repeat(var(--stat-n, 5), minmax(0, 1fr)); padding: 1.6rem 0; background: rgba(255, 255, 255, .92); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); }
 .stat { position: relative; display: flex; flex-direction: column; align-items: center; gap: .1rem; padding: .5rem 1rem; text-align: center; }
 .stat + .stat::before { content: ""; position: absolute; left: 0; top: 18%; bottom: 18%; width: 1px; background: var(--border); }
 .stat-icon { color: var(--teal-ink); font-size: 1.35rem; }
@@ -598,3 +598,22 @@ html[lang="en"] .alt-lang { display: none !important; }
 
 .topbar-account { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; }
 .topbar-account i { color: var(--secondary-light); }
+
+/* ---- Website form feedback ---- */
+.form-alert { display: flex; gap: .75rem; align-items: flex-start; padding: .9rem 1rem; margin-bottom: 1.25rem; border-radius: var(--r-md, 14px); font-size: .95rem; }
+.form-alert > i { font-size: 1.25rem; line-height: 1.2; }
+.form-alert-ok { background: color-mix(in srgb, #16a34a 10%, #fff); color: #14532d; border: 1px solid color-mix(in srgb, #16a34a 30%, #fff); }
+.form-alert-error { background: color-mix(in srgb, #dc2626 8%, #fff); color: #7f1d1d; border: 1px solid color-mix(in srgb, #dc2626 28%, #fff); }
+.hp-field { position: absolute !important; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ---- Health tips article ---- */
+.article-page { max-width: 760px; margin-inline: auto; }
+.article-page .article-cover { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r-xl, 24px); margin-bottom: 1.75rem; }
+.article-content { font-size: 1.075rem; line-height: 1.85; color: var(--text, #334155); }
+.article-content h2 { font-size: 1.45rem; margin: 2rem 0 .75rem; }
+.article-content h3 { font-size: 1.2rem; margin: 1.5rem 0 .5rem; }
+.article-content ul, .article-content ol { padding-left: 1.25rem; }
+.article-content blockquote { border-left: 4px solid var(--primary, #0d6efd); padding: .25rem 0 .25rem 1rem; color: var(--muted, #64748b); }
+.article-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.article-content th, .article-content td { border: 1px solid var(--border, #e2e8f0); padding: .5rem .75rem; }
+.article-note { font-size: .9rem; color: var(--muted, #64748b); border-top: 1px solid var(--border, #e2e8f0); padding-top: 1rem; margin-top: 2.5rem; }

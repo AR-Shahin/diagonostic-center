@@ -43,9 +43,11 @@
                 <ul class="footer-links">
                     <li><a href="{{ route('site.report') }}">{{ __('রিপোর্ট ডাউনলোড') }}</a></li>
                     <li><a href="{{ route('site.appointment') }}">{{ __('অ্যাপয়েন্টমেন্ট নিন') }}</a></li>
-                    <li><a href="{{ route('site.home') }}#home-collection">{{ __('বাসায় নমুনা সংগ্রহ') }}</a></li>
-                    <li><a href="{{ route('site.home') }}#faq">{{ __('সাধারণ প্রশ্ন') }}</a></li>
-                    <li><a href="{{ route('site.home') }}#articles">{{ __('স্বাস্থ্য পরামর্শ') }}</a></li>
+                    @if ($content['home_collection']['enabled'])
+                        <li><a href="{{ route('site.appointment', ['type' => 'home']) }}">{{ __('বাসায় নমুনা সংগ্রহ') }}</a></li>
+                    @endif
+                    <li><a href="{{ route('site.articles') }}">{{ __('স্বাস্থ্য পরামর্শ') }}</a></li>
+                    @if ($content['faqs'])<li><a href="{{ route('site.home') }}#faq">{{ __('সাধারণ প্রশ্ন') }}</a></li>@endif
                 </ul>
             </div>
         </div>

@@ -29,7 +29,9 @@
                 <div class="hero-actions reveal" style="--d:.25s">
                     <a class="btn btn-primary btn-lg" href="{{ route('site.appointment') }}"><i class="bi bi-calendar2-check" aria-hidden="true"></i> {{ __('অ্যাপয়েন্টমেন্ট নিন') }}</a>
                     <a class="btn btn-ghost btn-lg" href="{{ route('site.report') }}"><i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i> {{ __('রিপোর্ট ডাউনলোড') }}</a>
-                    <a class="btn btn-teal-soft btn-lg" href="#home-collection"><i class="bi bi-house-heart" aria-hidden="true"></i> {{ __('বাসায় নমুনা সংগ্রহ') }}</a>
+                    @if ($content['home_collection']['enabled'])
+                        <a class="btn btn-teal-soft btn-lg" href="#home-collection"><i class="bi bi-house-heart" aria-hidden="true"></i> {{ __('বাসায় নমুনা সংগ্রহ') }}</a>
+                    @endif
                 </div>
             </div>
 

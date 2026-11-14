@@ -38,6 +38,14 @@
                 @endforeach
             </div>
 
+            @unless ($content['doctors'])
+                <div class="empty-state">
+                    <i class="bi bi-person-badge" aria-hidden="true"></i>
+                    <h2>{{ __('চিকিৎসকদের তালিকা শীঘ্রই আসছে') }}</h2>
+                    <p>{{ __('চেম্বারের সময় ও সিরিয়ালের জন্য হটলাইনে কল করুন।') }} <a href="{{ $site['phone_link'] }}">{{ $site['phone'] }}</a></p>
+                </div>
+            @endunless
+
             <div class="empty-state" data-filter-empty hidden>
                 <i class="bi bi-person-x" aria-hidden="true"></i>
                 <h2>{{ __('কোনো চিকিৎসক পাওয়া যায়নি') }}</h2>

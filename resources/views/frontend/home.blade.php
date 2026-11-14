@@ -10,14 +10,24 @@
     @include('frontend.home.packages')
     @include('frontend.home.departments')
     @include('frontend.home.services')
-    @include('frontend.home.doctors')
-    @include('frontend.home.home-collection')
+    @if ($content['doctors'])
+        @include('frontend.home.doctors')
+    @endif
+    @if ($content['home_collection']['enabled'])
+        @include('frontend.home.home-collection')
+    @endif
     @include('frontend.home.why-us')
     @include('frontend.home.how-it-works')
     @include('frontend.home.branches')
-    @include('frontend.home.testimonials')
+    @if ($content['testimonials'])
+        @include('frontend.home.testimonials')
+    @endif
     @include('frontend.home.corporate')
-    @include('frontend.home.articles')
-    @include('frontend.home.faq')
+    @if ($content['articles'])
+        @include('frontend.home.articles')
+    @endif
+    @if ($content['faqs'])
+        @include('frontend.home.faq')
+    @endif
     @include('frontend.home.final-cta')
 @endsection

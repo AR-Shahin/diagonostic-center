@@ -97,6 +97,30 @@
           </li>
           @endforeach
           @endif
+          @php
+              $websiteMenu = [
+                  ['admin.web-requests.*', 'admin.web-requests.index', 'webrequest-view', 'fas fa-inbox', 'Website requests'],
+                  ['admin.doctors.*', 'admin.doctors.index', 'webcontent-edit', 'fas fa-user-md', 'Doctors'],
+                  ['admin.articles.*', 'admin.articles.index', 'webcontent-edit', 'fas fa-newspaper', 'Health articles'],
+                  ['admin.faqs.*', 'admin.faqs.index', 'webcontent-edit', 'fas fa-question-circle', 'FAQ'],
+                  ['admin.testimonials.*', 'admin.testimonials.index', 'webcontent-edit', 'fas fa-comment-dots', 'Patient reviews'],
+                  ['admin.website-content.*', 'admin.website-content.index', 'webcontent-edit', 'fas fa-pen-nib', 'Home page text'],
+              ];
+              $visibleWebsite = array_filter($websiteMenu, fn ($m) => in_array($m[2], $permissions));
+              $newWebRequests = in_array('webrequest-view', $permissions) ? \App\Models\WebRequest::where('status', 'new')->count() : 0;
+          @endphp
+          @if ($visibleWebsite)
+          <li class="nav-header">WEBSITE</li>
+          @foreach ($visibleWebsite as [$pattern, $route, $perm, $icon, $label])
+          <li class="nav-item">
+            <a href="{{ route($route) }}" @class(['nav-link', 'active' => request()->routeIs($pattern)])>
+              <i class="nav-icon {{ $icon }}"></i><p>{{ $label }}
+                @if ($route === 'admin.web-requests.index' && $newWebRequests)<span class="nav-badge badge text-bg-danger me-3">{{ $newWebRequests }}</span>@endif
+              </p>
+            </a>
+          </li>
+          @endforeach
+          @endif
           @if (in_array('lab-view', $permissions))
           <li class="nav-header">LAB</li>
           <li class="nav-item">

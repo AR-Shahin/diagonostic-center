@@ -27,7 +27,8 @@
             @endforeach
         </div>
 
-        {{-- Google Reviews: connect the Places API / embed here when available --}}
-        <p class="text-center mt-4 mb-0 reveal"><a class="link-arrow" href="#">{{ __('গুগল রিভিউ দেখুন') }} <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a></p>
+        @if ($content['google_reviews_url'])
+            <p class="text-center mt-4 mb-0 reveal"><a class="link-arrow" href="{{ $content['google_reviews_url'] }}" target="_blank" rel="noopener">{{ __('গুগল রিভিউ দেখুন') }} <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a></p>
+        @endif
     </div>
 </section>

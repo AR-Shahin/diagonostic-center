@@ -3,7 +3,7 @@
 @if (count($stats))
     <section class="stats-wrap" aria-label="{{ __('এক নজরে') }}">
         <div class="container">
-            <div class="stats-card reveal">
+            <div class="stats-card reveal" style="--stat-n: {{ count($stats) }}">
                 @foreach ($stats as $stat)
                     <div class="stat">
                         <span class="stat-icon"><i class="bi {{ $stat['icon'] }}" aria-hidden="true"></i></span>

@@ -96,6 +96,22 @@
         apply();
     });
 
+    /* ---- Website forms: bring the success / error message into view after the page reloads ---- */
+    const formMessage = document.querySelector('[data-focus-me]');
+    if (formMessage) {
+        formMessage.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        formMessage.focus({ preventScroll: true });
+    }
+
+    /* ---- Appointment form: the address is needed only for home collection ---- */
+    const apForm = document.getElementById('appointmentForm');
+    if (apForm) {
+        const address = apForm.querySelector('[name=address]');
+        const syncType = () => { address.required = apForm.querySelector('[name=type]:checked')?.value === 'home'; };
+        apForm.querySelectorAll('[name=type]').forEach((r) => r.addEventListener('change', syncType));
+        syncType();
+    }
+
     /* ---- Demo forms: not connected to a backend yet ---- */
     let toast;
     const showToast = (message) => {

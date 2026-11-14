@@ -16,17 +16,19 @@
                     </ol>
 
                     <div class="hc-meta">
-                        <div>
-                            <small>{{ __('সেবা এলাকা') }}</small>
-                            <div class="hc-areas">
-                                @foreach ($hc['areas'] as $area)
-                                    <span>{{ $area }}</span>
-                                @endforeach
+                        @if ($hc['areas'])
+                            <div>
+                                <small>{{ __('সেবা এলাকা') }}</small>
+                                <div class="hc-areas">
+                                    @foreach ($hc['areas'] as $area)
+                                        <span>{{ $area }}</span>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <div>
                             <small>{{ __('কালেকশন চার্জ') }}</small>
-                            <strong>৳ {{ $hc['charge'] }}</strong>
+                            <strong>{{ $hc['charge'] ? '৳ '.$hc['charge'] : __('কল করে জানুন') }}</strong>
                         </div>
                     </div>
 

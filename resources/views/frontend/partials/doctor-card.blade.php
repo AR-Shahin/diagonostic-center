@@ -9,13 +9,17 @@
     </div>
     <h3 class="doctor-name">{{ $doctor['name'] }}</h3>
     <p class="doctor-qual">{{ $doctor['qualification'] }}</p>
-    <p class="doctor-role">{{ $doctor['designation'] }}</p>
+    @if ($doctor['designation'])<p class="doctor-role">{{ $doctor['designation'] }}</p>@endif
     <span class="tag tag-blue">{{ $doctor['speciality'] }}</span>
 
     <ul class="meta-list text-start">
-        <li><i class="bi bi-calendar3" aria-hidden="true"></i> {{ $doctor['schedule'] }}</li>
-        <li><i class="bi bi-wallet2" aria-hidden="true"></i> {{ __('ভিজিট:') }} ৳ {{ $doctor['fee'] }}</li>
+        @if ($doctor['schedule'])<li><i class="bi bi-calendar3" aria-hidden="true"></i> {{ $doctor['schedule'] }}</li>@endif
+        @if ($doctor['fee'])<li><i class="bi bi-wallet2" aria-hidden="true"></i> {{ __('ভিজিট:') }} ৳ {{ $doctor['fee'] }}</li>@endif
     </ul>
 
-    <a href="{{ route('site.appointment', ['doctor' => 1]) }}" class="btn btn-primary w-100">{{ __('অ্যাপয়েন্টমেন্ট নিন') }}</a>
+    @if ($doctor['bookable'])
+        <a href="{{ route('site.appointment', ['doctor' => $doctor['slug']]) }}" class="btn btn-primary w-100">{{ __('অ্যাপয়েন্টমেন্ট নিন') }}</a>
+    @else
+        <a href="{{ $site['phone_link'] }}" class="btn btn-ghost w-100"><i class="bi bi-telephone" aria-hidden="true"></i> {{ __('সিরিয়ালের জন্য কল করুন') }}</a>
+    @endif
 </article>

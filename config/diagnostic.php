@@ -27,6 +27,19 @@ return [
         'portal_force_password_change' => 1,
     ],
 
+    // Public website text edited in Admin → Website → Website content. Empty = the built-in wording.
+    'website' => [
+        'hero_eyebrow_bn' => '', 'hero_eyebrow_en' => '',
+        'hero_lead_bn' => '', 'hero_lead_en' => '',
+        'hero_image' => '',
+        'hero_popular' => 'CBC, HbA1c, Lipid Profile, TSH, USG',
+        'stat_years' => 0,          // 0 = hidden
+        'stat_patients' => 0,       // 0 = hidden
+        'home_collection_enabled' => 1,
+        'home_collection_areas_bn' => '', 'home_collection_areas_en' => '',
+        'google_reviews_url' => '',
+    ],
+
     'discount_bearers' => [
         'company' => 'Company bears the discount (commission on full price)',
         'referrer' => 'Referrer bears the discount (deducted from commission)',

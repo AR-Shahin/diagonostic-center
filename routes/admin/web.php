@@ -2,6 +2,7 @@
 
 use App\Helper\Trait\Helper;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BusinessSettingController;
 use App\Http\Controllers\Admin\CashClosingController;
@@ -9,7 +10,9 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommissionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\LabController;
 use App\Http\Controllers\Admin\LabTestController;
@@ -22,7 +25,10 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SampleTypeController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\WebRequestController;
+use App\Http\Controllers\Admin\WebsiteContentController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function () {
@@ -126,6 +132,16 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
     Route::post('expenses/categories', [ExpenseController::class, 'storeCategory'])->name('expenses.categories.store');
     Route::post('expenses/categories/{category}/toggle', [ExpenseController::class, 'toggleCategory'])->name('expenses.categories.toggle');
     Route::resource('expenses', ExpenseController::class)->only(['index', 'store', 'update', 'destroy']);
+    // ---- Phase 7: website content + requests from the website
+    Route::resource('doctors', DoctorController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('articles', ArticleController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('faqs', FaqController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('testimonials', TestimonialController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('website-content', [WebsiteContentController::class, 'index'])->name('website-content.index');
+    Route::post('website-content', [WebsiteContentController::class, 'update'])->name('website-content.update');
+    Route::get('web-requests', [WebRequestController::class, 'index'])->name('web-requests.index');
+    Route::patch('web-requests/{webRequest}', [WebRequestController::class, 'update'])->name('web-requests.update');
+
     // ---- Phase 6: reports
     Route::get('reports/{type?}', [ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/{type}/export', [ReportController::class, 'export'])->name('reports.export');

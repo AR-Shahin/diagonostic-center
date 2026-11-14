@@ -1,4 +1,4 @@
-<section class="section section-alt" aria-labelledby="corp-title">
+<section class="section section-alt" id="corporate" aria-labelledby="corp-title">
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-6 reveal">
@@ -14,25 +14,27 @@
             </div>
 
             <div class="col-lg-6 reveal" style="--d:.1s">
-                <form class="form-card" data-demo-form>
+                <form class="form-card" method="POST" action="{{ route('site.corporate.store') }}">
+                    @csrf
                     <h3>{{ __('কোটেশনের অনুরোধ') }}</h3>
                     <p class="text-body-secondary">{{ __('তথ্য দিন, আমরা যোগাযোগ করব।') }}</p>
+                    @include('frontend.partials.form-status', ['form' => 'corporate'])
                     <div class="row g-3">
                         <div class="col-sm-6">
                             <label class="form-label" for="corpCompany">{{ __('প্রতিষ্ঠানের নাম') }}</label>
-                            <input class="form-control" id="corpCompany" name="company" type="text" autocomplete="organization" required>
+                            <input class="form-control" id="corpCompany" name="company" type="text" autocomplete="organization" value="{{ old('company') }}" maxlength="255" required>
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label" for="corpName">{{ __('যোগাযোগের ব্যক্তি') }}</label>
-                            <input class="form-control" id="corpName" name="name" type="text" autocomplete="name" required>
+                            <input class="form-control" id="corpName" name="name" type="text" autocomplete="name" value="{{ old('name') }}" maxlength="100" required>
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label" for="corpPhone">{{ __('মোবাইল নম্বর') }}</label>
-                            <input class="form-control" id="corpPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+                            <input class="form-control" id="corpPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX" value="{{ old('phone') }}" required>
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label" for="corpStaff">{{ __('আনুমানিক কর্মী সংখ্যা') }}</label>
-                            <input class="form-control" id="corpStaff" name="staff" type="number" min="1" inputmode="numeric">
+                            <input class="form-control" id="corpStaff" name="staff" type="number" min="1" inputmode="numeric" value="{{ old('staff') }}">
                         </div>
                         <div class="col-12">
                             <button class="btn btn-primary btn-lg w-100" type="submit">{{ __('কোটেশনের অনুরোধ পাঠান') }}</button>

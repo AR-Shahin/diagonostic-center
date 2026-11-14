@@ -42,10 +42,11 @@ class DatabaseSeeder extends Seeder
             LabPermissionSeeder::class,
             AccountsPermissionSeeder::class,
             ReportPermissionSeeder::class,
+            WebsiteContentSeeder::class,
         ]);
 
         if (app()->isLocal()) {
-            $this->call([DemoCatalogSeeder::class, DemoReferrerSeeder::class]);
+            $this->call([DemoCatalogSeeder::class, DemoReferrerSeeder::class, DemoWebsiteSeeder::class]);
         }
     }
 }

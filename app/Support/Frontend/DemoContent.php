@@ -3,10 +3,10 @@
 namespace App\Support\Frontend;
 
 use App\Models\WebsiteInfo;
-use Illuminate\Support\Carbon;
 
 /**
- * PLACEHOLDER CONTENT FOR DESIGN REVIEW.
+ * Website content: built-in wording, plus data from the admin panel (CatalogContent, SiteContent).
+ * Catalog sections keep placeholders below until the centre enters its own tests, packages and branches.
  *
  * Every section of the public website reads from the arrays below, so replacing
  * this class with Eloquent queries (tests, packages, doctors, branches, ...) is
@@ -57,37 +57,32 @@ class DemoContent
     public static function all(): array
     {
         $departments = self::departments();
+        $doctors = SiteContent::doctors();
 
         return [
             'hero' => [
-                'eyebrow' => __('অনলাইনে টেস্ট, অ্যাপয়েন্টমেন্ট ও রিপোর্ট'),
-                'lead' => __('টেস্ট খুঁজুন, অ্যাপয়েন্টমেন্ট নিন, প্রয়োজনে বাসা থেকে নমুনা দিন এবং ফোনেই রিপোর্ট ডাউনলোড করুন।'),
-                'image' => null, // set to a banner URL from the admin panel to replace the built-in illustration
+                'eyebrow' => SiteContent::text('hero_eyebrow') ?? __('অনলাইনে টেস্ট, অ্যাপয়েন্টমেন্ট ও রিপোর্ট'),
+                'lead' => SiteContent::text('hero_lead') ?? __('টেস্ট খুঁজুন, অ্যাপয়েন্টমেন্ট নিন, প্রয়োজনে বাসা থেকে নমুনা দিন এবং ফোনেই রিপোর্ট ডাউনলোড করুন।'),
+                'image' => SiteContent::heroImage(),
                 'image_alt' => __('ডায়াগনস্টিক ল্যাবরেটরি'),
-                'popular' => ['CBC', 'HbA1c', 'Lipid Profile', 'TSH', 'USG'],
+                'popular' => array_values(array_filter(array_map('trim', explode(',', (string) SiteContent::setting('hero_popular'))))),
             ],
-            'stats' => [
-                ['icon' => 'bi-award', 'value' => '00', 'suffix' => '+', 'label' => __('বছরের অভিজ্ঞতা')],
-                ['icon' => 'bi-clipboard2-pulse', 'value' => '00', 'suffix' => '+', 'label' => __('ডায়াগনস্টিক টেস্ট')],
-                ['icon' => 'bi-person-badge', 'value' => '00', 'suffix' => '+', 'label' => __('বিশেষজ্ঞ চিকিৎসক')],
-                ['icon' => 'bi-emoji-smile', 'value' => '00', 'suffix' => '+', 'label' => __('সন্তুষ্ট রোগী')],
-                ['icon' => 'bi-buildings', 'value' => '00', 'suffix' => '', 'label' => __('শাখা')],
-            ],
+            'stats' => SiteContent::stats(),
             'quick' => [
                 ['icon' => 'bi-search', 'title' => __('টেস্ট খুঁজুন'), 'desc' => __('নাম লিখে টেস্ট, মূল্য ও প্রস্তুতি দেখুন।'), 'url' => route('site.tests')],
                 ['icon' => 'bi-calendar2-check', 'title' => __('অ্যাপয়েন্টমেন্ট নিন'), 'desc' => __('পছন্দের তারিখ ও সময় বেছে নিন।'), 'url' => route('site.appointment')],
                 ['icon' => 'bi-file-earmark-arrow-down', 'title' => __('রিপোর্ট ডাউনলোড'), 'desc' => __('মোবাইল নম্বর বা ইনভয়েস দিয়ে রিপোর্ট নিন।'), 'url' => route('site.report')],
-                ['icon' => 'bi-house-heart', 'title' => __('বাসায় নমুনা সংগ্রহ'), 'desc' => __('ঘরে বসেই নমুনা দেওয়ার অনুরোধ করুন।'), 'url' => route('site.home').'#home-collection'],
+                SiteContent::setting('home_collection_enabled')
+                    ? ['icon' => 'bi-house-heart', 'title' => __('বাসায় নমুনা সংগ্রহ'), 'desc' => __('ঘরে বসেই নমুনা দেওয়ার অনুরোধ করুন।'), 'url' => route('site.appointment', ['type' => 'home'])]
+                    : ['icon' => 'bi-person-badge', 'title' => __('চিকিৎসক খুঁজুন'), 'desc' => __('বিশেষজ্ঞ চিকিৎসকের চেম্বারের সময় দেখুন।'), 'url' => route('site.doctors')],
             ],
             'departments' => CatalogContent::departments() ?? $departments,
             'tests' => CatalogContent::tests() ?? self::tests(),
             'packages' => CatalogContent::packages() ?? self::packages(),
             'services' => self::services(),
-            'doctors' => self::doctors(),
-            'specialities' => [__('মেডিসিন'), __('কার্ডিওলজি'), __('গাইনোকোলজি'), __('প্যাথলজি'), __('রেডিওলজি'), __('এন্ডোক্রাইনোলজি'), __('নেফ্রোলজি'), __('শিশুরোগ')],
-            'home_collection' => [
-                'areas' => [__('[এলাকা ১]'), __('[এলাকা ২]'), __('[এলাকা ৩]'), __('[এলাকা ৪]')],
-                'charge' => '000',
+            'doctors' => $doctors,
+            'specialities' => array_values(array_unique(array_column($doctors, 'speciality'))),
+            'home_collection' => SiteContent::homeCollection() + [
                 'steps' => [
                     __('ফোনে বা অনলাইনে অনুরোধ করুন'),
                     __('পছন্দের সময় ও ঠিকানা নিশ্চিত করুন'),
@@ -115,12 +110,8 @@ class DemoContent
                 ['name' => __('[শাখা ২]'), 'address' => __('[ঠিকানা], [এলাকা], [শহর]'), 'phone' => __('[ফোন নম্বর]'), 'hours' => __('[খোলার সময়]'), 'services' => [__('প্যাথলজি'), __('নমুনা সংগ্রহ')], 'image' => null],
                 ['name' => __('[শাখা ৩]'), 'address' => __('[ঠিকানা], [এলাকা], [শহর]'), 'phone' => __('[ফোন নম্বর]'), 'hours' => __('[খোলার সময়]'), 'services' => [__('প্যাথলজি'), __('আল্ট্রাসাউন্ড')], 'image' => null],
             ],
-            'testimonials' => array_fill(0, 3, [
-                'text' => __('রোগীর মতামত এখানে প্রদর্শিত হবে। শুধুমাত্র সম্মতিসহ সংগৃহীত বা যাচাইকৃত রিভিউ অ্যাডমিন প্যানেল থেকে যুক্ত করুন।'),
-                'name' => __('[রোগীর নাম]'),
-                'meta' => __('[সেবার ধরন]'),
-                'rating' => 5,
-            ]),
+            'testimonials' => SiteContent::testimonials(),
+            'google_reviews_url' => SiteContent::setting('google_reviews_url') ?: null,
             'corporate' => [
                 ['icon' => 'bi-briefcase', 'title' => __('কর্পোরেট হেলথ চেকআপ')],
                 ['icon' => 'bi-people', 'title' => __('কর্মীদের মেডিকেল স্ক্রিনিং')],
@@ -128,20 +119,8 @@ class DemoContent
                 ['icon' => 'bi-building', 'title' => __('প্রাতিষ্ঠানিক হেলথ প্যাকেজ')],
                 ['icon' => 'bi-people', 'title' => __('কর্পোরেট পার্টনারশিপ')],
             ],
-            'articles' => [
-                ['category' => __('টেস্ট প্রস্তুতি'), 'title' => __('রক্ত পরীক্ষার আগে যা জানা জরুরি'), 'excerpt' => __('উপবাস, পানি পান ও ওষুধ সংক্রান্ত সাধারণ নির্দেশনা এখানে প্রকাশিত হবে।'), 'date' => Carbon::now()->subDays(3), 'image' => null, 'url' => '#'],
-                ['category' => __('স্বাস্থ্য সচেতনতা'), 'title' => __('নিয়মিত স্বাস্থ্য পরীক্ষা কেন গুরুত্বপূর্ণ'), 'excerpt' => __('কোন বয়সে কোন পরীক্ষা করানো উচিত—সংক্ষিপ্ত গাইড এখানে যুক্ত হবে।'), 'date' => Carbon::now()->subDays(10), 'image' => null, 'url' => '#'],
-                ['category' => __('মৌসুমি স্বাস্থ্য'), 'title' => __('বর্ষায় জ্বর ও সংক্রমণ থেকে সতর্কতা'), 'excerpt' => __('মৌসুমি রোগের লক্ষণ ও কখন পরীক্ষা করাবেন, তার নির্দেশনা এখানে থাকবে।'), 'date' => Carbon::now()->subDays(18), 'image' => null, 'url' => '#'],
-            ],
-            'faqs' => [
-                ['q' => __('কীভাবে ডায়াগনস্টিক টেস্ট বুক করবেন?'), 'a' => __('“অ্যাপয়েন্টমেন্ট নিন” পেজে টেস্ট বা চিকিৎসক বেছে তারিখ ও সময় নির্ধারণ করুন। চাইলে হটলাইনে কল করেও বুক করতে পারেন।')],
-                ['q' => __('কীভাবে রিপোর্ট ডাউনলোড করবেন?'), 'a' => __('“রিপোর্ট ডাউনলোড” পেজে মোবাইল নম্বর ও ওটিপি, অথবা ইনভয়েস নম্বর ও রিপোর্ট পিন দিয়ে রিপোর্ট খুলে PDF ডাউনলোড করতে পারবেন।')],
-                ['q' => __('রিপোর্ট পেতে কত সময় লাগে?'), 'a' => __('টেস্টভেদে সময় আলাদা। প্রতিটি টেস্টের কার্ডে রিপোর্ট ডেলিভারির আনুমানিক সময় উল্লেখ থাকে এবং ইনভয়েসেও দেওয়া হয়।')],
-                ['q' => __('বাসা থেকে নমুনা সংগ্রহের সুবিধা আছে কি?'), 'a' => __('নির্ধারিত সেবা এলাকায় বাসা থেকে নমুনা সংগ্রহের সুবিধা রয়েছে। এলাকা ও চার্জ “বাসায় নমুনা সংগ্রহ” সেকশনে দেখুন।')],
-                ['q' => __('কোন কোন পেমেন্ট পদ্ধতি গ্রহণযোগ্য?'), 'a' => __('সেন্টারে চালু থাকা পদ্ধতি অনুযায়ী পেমেন্ট করা যায়। বুকিংয়ের সময় চালু অপশনগুলো দেখানো হবে।')],
-                ['q' => __('রক্ত পরীক্ষার আগে কি উপবাস প্রয়োজন?'), 'a' => __('সব টেস্টে নয়। প্রতিটি টেস্টের প্রস্তুতি নির্দেশনা টেস্ট কার্ডে দেওয়া থাকে। নিশ্চিত হতে চিকিৎসক বা আমাদের হটলাইনে জানুন।')],
-                ['q' => __('আপনাদের খোলার সময় কখন?'), 'a' => __('শাখাভেদে সময় আলাদা হতে পারে। প্রতিটি শাখার সময় “আমাদের শাখা” সেকশনে দেখুন।')],
-            ],
+            'articles' => SiteContent::articles(3),
+            'faqs' => SiteContent::faqs(),
         ];
     }
 
@@ -212,21 +191,6 @@ class DemoContent
             $s('digital-imaging', __('ডিজিটাল ইমেজিং'), 'Digital Imaging', 'bi-display', __('ছবি ডিজিটালভাবে সংরক্ষণ ও সহজে শেয়ারের সুবিধা।'), __('পূর্বের ছবি থাকলে সঙ্গে আনুন।'), 6, 'light'),
             $s('specialized', __('বিশেষায়িত ডায়াগনস্টিক সেবা'), 'Specialized Diagnostic Services', 'bi-stars', __('বিশেষ ও জটিল পরীক্ষার জন্য আলাদা ব্যবস্থা।'), __('বিস্তারিত জানতে হটলাইনে যোগাযোগ করুন।'), 6, 'blue'),
         ];
-    }
-
-    private static function doctors(): array
-    {
-        $specs = [__('মেডিসিন'), __('কার্ডিওলজি'), __('গাইনোকোলজি'), __('প্যাথলজি'), __('রেডিওলজি'), __('এন্ডোক্রাইনোলজি'), __('নেফ্রোলজি'), __('শিশুরোগ')];
-
-        return array_map(fn ($spec) => [
-            'name' => __('ডা. [চিকিৎসকের নাম]'),
-            'qualification' => __('MBBS, [ডিগ্রি]'),
-            'designation' => __('[পদবি]'),
-            'speciality' => $spec,
-            'schedule' => __('[দিন ও সময়]'),
-            'fee' => '000',
-            'image' => null,
-        ], $specs);
     }
 
     private static function localizedSetting($w, string $field): ?string
