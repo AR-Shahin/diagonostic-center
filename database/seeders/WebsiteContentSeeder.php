@@ -4,27 +4,15 @@ namespace Database\Seeders;
 
 use App\Models\Faq;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\PermissionRegistrar;
 
 /**
- * Phase 7 (website content) permissions + the starter FAQs, so the website never shows an empty FAQ.
- * Safe to re-run: php artisan db:seed --class=WebsiteContentSeeder
+ * Starter FAQs, so the website never shows an empty FAQ (only when there are none yet).
+ * Called from DatabaseSeeder; the permissions live there too.
  */
 class WebsiteContentSeeder extends Seeder
 {
     public function run(): void
     {
-        $all = ['webcontent-edit', 'webcontent-delete', 'webrequest-view', 'webrequest-handle'];
-        foreach ($all as $name) {
-            Permission::firstOrCreate(['name' => $name, 'guard_name' => 'admin']);
-        }
-        foreach (['Super Admin' => $all, 'Manager' => $all, 'Receptionist' => ['webrequest-view', 'webrequest-handle']] as $roleName => $permissions) {
-            Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'admin'])->givePermissionTo($permissions);
-        }
-        app(PermissionRegistrar::class)->forgetCachedPermissions();
-
         if (Faq::exists()) {
             return;
         }

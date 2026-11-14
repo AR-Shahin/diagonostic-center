@@ -10,11 +10,7 @@ use App\Models\Referrer;
 use App\Models\ReferrerRate;
 use App\Services\Billing\InvoiceService;
 use App\Services\Reports\ReportService;
-use Database\Seeders\AccountsPermissionSeeder;
-use Database\Seeders\BillingPermissionSeeder;
-use Database\Seeders\CatalogPermissionSeeder;
-use Database\Seeders\LabPermissionSeeder;
-use Database\Seeders\ReportPermissionSeeder;
+use Database\Seeders\DatabaseSeeder;
 
 beforeEach(function () {
     $this->branch = Branch::create(['code' => 'MAIN', 'name_en' => 'Main', 'is_main' => true]);
@@ -98,7 +94,7 @@ it('counts turnaround against the promised time', function () {
 
 describe('screens', function () {
     beforeEach(function () {
-        $this->seed([CatalogPermissionSeeder::class, BillingPermissionSeeder::class, LabPermissionSeeder::class, AccountsPermissionSeeder::class, ReportPermissionSeeder::class]);
+        DatabaseSeeder::rolesAndPermissions();
         $this->owner->assignRole('Super Admin');
     });
 

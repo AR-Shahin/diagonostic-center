@@ -129,11 +129,9 @@
 cp .env.example .env      # তারপর .env-এ ডাটাবেস, APP_URL ইত্যাদি দিন
 php artisan key:generate
 php artisan migrate
-php artisan db:seed --class=CatalogPermissionSeeder
-php artisan db:seed --class=BillingPermissionSeeder
-php artisan db:seed --class=LabPermissionSeeder
+php artisan db:seed
 php artisan storage:link</pre>
-                            একদম নতুন ডাটাবেসে <code>php artisan migrate --seed</code> দিলে অ্যাডমিন, রোল ও অনুমতি একবারে তৈরি হয়।
+                            <code>db:seed</code> সব অনুমতি, রোল, শুরুর অ্যাকাউন্ট ও খরচের খাত একবারে তৈরি করে। প্রতিটি আপডেটের পর <code>php artisan migrate</code> ও <code>php artisan db:seed</code> আবার চালান — নতুন অনুমতি যোগ হয়, কিন্তু রোলে আপনার করা পরিবর্তন বা কোনো ডাটা মোছে না, কিছু দ্বিগুণও হয় না।
                         </li>
                         <li><b>লাইভ সার্ভারে:</b> <code>.env</code>-এ অবশ্যই <code>APP_ENV=production</code> ও <code>APP_DEBUG=false</code> দিন। <code>local</code> থাকলে প্রতিটি রিকোয়েস্টে ক্যাশ মুছে যায় এবং লগইনের ভুল-পাসওয়ার্ড লক কাজ করে না।</li>
                         <li><b>প্রথম লগইন:</b> অ্যাডমিন প্যানেলে <code>/admin/login</code> ঠিকানায় যান। ডেমো ডাটায় <code>admin@mail.com</code> / <code>password</code> দিয়ে ঢোকা যায়।</li>
@@ -674,7 +672,7 @@ php artisan storage:link</pre>
                     <h2><span class="num">২২</span> সাধারণ সমস্যা ও সমাধান</h2>
                     <div class="accordion" id="faqList">
                         @foreach ([
-                            ['মেনুতে কোনো অংশ দেখা যাচ্ছে না।', 'আপনার রোলে সেই অনুমতি নেই। Super Admin → Security → Role → Assign permissions থেকে অনুমতি দিন। নতুন আপডেটের পর অনুমতি না দেখালে ডেভেলপারকে CatalogPermissionSeeder, BillingPermissionSeeder, LabPermissionSeeder, AccountsPermissionSeeder, ReportPermissionSeeder ও WebsiteContentSeeder চালাতে বলুন।'],
+                            ['মেনুতে কোনো অংশ দেখা যাচ্ছে না।', 'আপনার রোলে সেই অনুমতি নেই। Super Admin → Security → Role → Assign permissions থেকে অনুমতি দিন। নতুন আপডেটের পর অনুমতি না দেখালে ডেভেলপারকে <code>php artisan db:seed</code> চালাতে বলুন।'],
                             ['বিলে টেস্ট খুঁজে পাওয়া যাচ্ছে না।', 'টেস্টটি Inactive, অথবা “Available at”-এ এই শাখা টিক দেওয়া নেই। টেস্ট এডিট করে দেখুন।'],
                             ['প্যাকেজ বিলে আসছে না।', 'প্যাকেজটি Inactive অথবা মেয়াদ (Valid from / until) শেষ বা এখনো শুরু হয়নি।'],
                             ['“is already registered to …” লেখা আসছে।', 'নম্বরটি অন্য একজনের নামে আছে। একই রোগী হলে সার্চ থেকে তাঁকে বেছে নিন; পরিবারের অন্য সদস্য হলে “Add as a new family member” টিক দিন।'],

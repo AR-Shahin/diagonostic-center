@@ -7,11 +7,7 @@ use App\Models\Doctor;
 use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Models\WebRequest;
-use Database\Seeders\AccountsPermissionSeeder;
-use Database\Seeders\BillingPermissionSeeder;
-use Database\Seeders\CatalogPermissionSeeder;
-use Database\Seeders\LabPermissionSeeder;
-use Database\Seeders\ReportPermissionSeeder;
+use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\WebsiteContentSeeder;
 
 beforeEach(function () {
@@ -77,7 +73,7 @@ it('hides empty sections instead of showing placeholders', function () {
 
 describe('admin', function () {
     beforeEach(function () {
-        $this->seed([CatalogPermissionSeeder::class, BillingPermissionSeeder::class, LabPermissionSeeder::class, AccountsPermissionSeeder::class, ReportPermissionSeeder::class, WebsiteContentSeeder::class]);
+        DatabaseSeeder::rolesAndPermissions();
         $this->owner = Admin::create(['name' => 'Owner', 'email' => 'owner@test.com', 'password' => 'secret']);
         $this->owner->assignRole('Super Admin');
     });

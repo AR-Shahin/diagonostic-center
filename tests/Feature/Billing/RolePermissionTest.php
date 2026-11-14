@@ -1,21 +1,12 @@
 <?php
 
 use App\Models\Admin;
-use Database\Seeders\AccountsPermissionSeeder;
-use Database\Seeders\BillingPermissionSeeder;
-use Database\Seeders\CatalogPermissionSeeder;
-use Database\Seeders\LabPermissionSeeder;
-use Database\Seeders\ReportPermissionSeeder;
-use Database\Seeders\WebsiteContentSeeder;
+use Database\Seeders\DatabaseSeeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
-    foreach (['admin-create', 'admin-view', 'admin-edit', 'admin-delete', 'role-create', 'role-view', 'role-delete', 'permission-create', 'permission-view', 'permission-update', 'permission-delete'] as $name) {
-        Permission::create(['name' => $name, 'guard_name' => 'admin']);
-    }
-    $this->seed([CatalogPermissionSeeder::class, BillingPermissionSeeder::class, LabPermissionSeeder::class,
-        AccountsPermissionSeeder::class, ReportPermissionSeeder::class, WebsiteContentSeeder::class]);
+    DatabaseSeeder::rolesAndPermissions();
     $this->owner = Admin::create(['name' => 'Owner', 'email' => 'owner@test.com', 'password' => 'secret']);
     $this->superRole = Role::findByName('Super Admin', 'admin');
     $this->superRole->givePermissionTo(Permission::where('guard_name', 'admin')->get());

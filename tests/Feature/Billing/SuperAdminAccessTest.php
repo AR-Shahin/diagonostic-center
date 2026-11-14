@@ -3,20 +3,12 @@
 use App\Models\Admin;
 use App\Models\Branch;
 use App\Support\BranchAccess;
-use Database\Seeders\AccountsPermissionSeeder;
-use Database\Seeders\BillingPermissionSeeder;
-use Database\Seeders\CatalogPermissionSeeder;
-use Database\Seeders\LabPermissionSeeder;
-use Database\Seeders\ReportPermissionSeeder;
-use Database\Seeders\WebsiteContentSeeder;
+use Database\Seeders\DatabaseSeeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
-    foreach (['admin-create', 'admin-view', 'admin-edit', 'admin-delete', 'role-create', 'role-view', 'role-delete', 'permission-create', 'permission-view', 'permission-update', 'permission-delete'] as $name) {
-        Permission::create(['name' => $name, 'guard_name' => 'admin']);
-    }
-    $this->seed([CatalogPermissionSeeder::class, BillingPermissionSeeder::class, LabPermissionSeeder::class, AccountsPermissionSeeder::class, ReportPermissionSeeder::class, WebsiteContentSeeder::class]);
+    DatabaseSeeder::rolesAndPermissions();
 
     $this->branch = Branch::create(['code' => 'B2', 'name_en' => 'Branch 2']);
     $this->superRole = Role::findByName('Super Admin', 'admin');
