@@ -167,19 +167,19 @@ class InvoiceService
         }
 
         $percent = $calc['discount_percent'];
-        if ($percent <= (float) $by->max_discount_percent + 0.0001) {
+        if ($percent <= $by->discountLimit() + 0.0001) {
             return null;
         }
 
         $approver = filled($data['approver_id'] ?? null) ? Admin::find($data['approver_id']) : null;
         if (! $approver || ! Hash::check((string) ($data['approver_password'] ?? ''), $approver->password)) {
             throw ValidationException::withMessages([
-                'approver_password' => 'This discount ('.round($percent, 2).'%) is above your limit of '.(float) $by->max_discount_percent.'%. A manager must approve it with their password.',
+                'approver_password' => 'This discount ('.round($percent, 2).'%) is above your limit of '.$by->discountLimit().'%. A manager must approve it with their password.',
             ]);
         }
-        if ($approver->id === $by->id || $percent > (float) $approver->max_discount_percent + 0.0001) {
+        if ($approver->id === $by->id || $percent > $approver->discountLimit() + 0.0001) {
             throw ValidationException::withMessages([
-                'approver_password' => "{$approver->name} cannot approve a ".round($percent, 2).'% discount (limit '.(float) $approver->max_discount_percent.'%).',
+                'approver_password' => "{$approver->name} cannot approve a ".round($percent, 2).'% discount (limit '.$approver->discountLimit().'%).',
             ]);
         }
 

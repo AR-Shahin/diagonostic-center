@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
@@ -57,6 +58,28 @@ class Admin extends Authenticatable
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    /** Has the Super Admin role and full access is switched on (config/diagnostic.php → super_admin). */
+    public function isSuperAdmin(): bool
+    {
+        return config('diagnostic.super_admin.full_access') && $this->hasRole(config('diagnostic.super_admin.role'), 'admin');
+    }
+
+    /** Every permission name this person may use. A Super Admin gets the full list, including permissions added later. */
+    public function permissionNames(): array
+    {
+        if ($this->isSuperAdmin()) {
+            return app(PermissionRegistrar::class)->getPermissions(['guard_name' => 'admin'])->pluck('name')->all();
+        }
+
+        return $this->getAllPermissions()->pluck('name')->all();
+    }
+
+    /** Highest discount % this person can give or approve without anyone else. */
+    public function discountLimit(): float
+    {
+        return $this->isSuperAdmin() ? 100.0 : (float) $this->max_discount_percent;
     }
 
     public function sendPasswordResetNotification($token)

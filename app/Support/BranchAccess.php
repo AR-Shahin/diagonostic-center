@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 /**
- * Staff tied to a branch only see and bill for that branch. Staff without a branch (head office) see all.
+ * Staff tied to a branch only see and bill for that branch. Staff without a branch (head office) and
+ * Super Admins see all.
  */
 class BranchAccess
 {
     public static function isRestricted(?Admin $admin): bool
     {
-        return $admin !== null && $admin->branch_id !== null;
+        return $admin !== null && $admin->branch_id !== null && ! $admin->isSuperAdmin();
     }
 
     public static function scope(Builder $query, ?Admin $admin, string $column = 'branch_id'): Builder

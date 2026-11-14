@@ -27,6 +27,16 @@ return [
         'portal_force_password_change' => 1,
     ],
 
+    /*
+     | Super Admin: everyone with this role can do everything — every permission (including ones added later),
+     | every branch and any discount — without ticking anything on the role's permission page.
+     | Set SUPER_ADMIN_FULL_ACCESS=false in .env to make Super Admin use ticked permissions like other roles.
+     */
+    'super_admin' => [
+        'role' => env('SUPER_ADMIN_ROLE', 'Super Admin'),
+        'full_access' => (bool) env('SUPER_ADMIN_FULL_ACCESS', true),
+    ],
+
     // Public website text edited in Admin → Website → Website content. Empty = the built-in wording.
     'website' => [
         'hero_eyebrow_bn' => '', 'hero_eyebrow_en' => '',

@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\Branch;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
@@ -48,7 +49,7 @@ class AdminController extends Controller
     public function create()
     {
         $this->authorize('admin-create');
-        $roles = Role::whereGuardName('admin')->get(['id', 'name']);
+        $roles = $this->assignableRoles();
 
         $branches = Branch::orderBy('sort')->pluck('name_en', 'id');
 
@@ -58,7 +59,8 @@ class AdminController extends Controller
     public function edit(Admin $admin)
     {
         $this->authorize('admin-edit');
-        $roles = Role::whereGuardName('admin')->get(['id', 'name']);
+        $this->guardSuperAdminAccount($admin);
+        $roles = $this->assignableRoles();
 
         $branches = Branch::orderBy('sort')->pluck('name_en', 'id');
 
@@ -72,7 +74,7 @@ class AdminController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'string', 'unique:admins,email'],
             'password' => ['required', 'confirmed'],
-            'role_id' => ['required', 'exists:roles,id'],
+            'role_id' => ['required', Rule::in($this->assignableRoles()->pluck('id'))],
             'branch_id' => ['nullable', 'exists:branches,id'],
             'max_discount_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'designation' => ['nullable', 'string', 'max:255'],
@@ -106,15 +108,22 @@ class AdminController extends Controller
     public function update(Request $request, Admin $admin)
     {
         $this->authorize('admin-edit');
+        $this->guardSuperAdminAccount($admin);
         $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'string', "unique:admins,email,$admin->id"],
+            'role_id' => ['required', Rule::in($this->assignableRoles()->pluck('id'))],
             'branch_id' => ['nullable', 'exists:branches,id'],
             'max_discount_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'designation' => ['nullable', 'string', 'max:255'],
             'qualification' => ['nullable', 'string', 'max:255'],
             'signature' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:1024'],
         ]);
+        $superRole = config('diagnostic.super_admin.role');
+        if ($admin->hasRole($superRole) && Role::findById($request->role_id, 'admin')->name !== $superRole
+            && Admin::role($superRole, 'admin')->count() <= 1) {
+            return back()->withInput()->withErrors(['role_id' => 'This is the only '.$superRole.'. Make someone else '.$superRole.' first.']);
+        }
         try {
             $admin->fill([
                 'name' => $request->name,
@@ -141,6 +150,12 @@ class AdminController extends Controller
     public function delete(Admin $admin)
     {
         $this->authorize('permission-delete');
+        $this->guardSuperAdminAccount($admin);
+        if ($admin->is(auth('admin')->user())) {
+            $this->warningAlert('You cannot delete your own account.');
+
+            return redirect()->back();
+        }
         $message = 'Admin Deleted!';
         try {
             $admin->delete();
@@ -150,6 +165,20 @@ class AdminController extends Controller
         } catch (Exception $e) {
             $this->logError($e->getMessage());
         }
+    }
+
+    /** Only a Super Admin can make someone Super Admin. */
+    private function assignableRoles()
+    {
+        return Role::whereGuardName('admin')
+            ->when(! auth('admin')->user()?->isSuperAdmin(), fn ($q) => $q->where('name', '!=', config('diagnostic.super_admin.role')))
+            ->get(['id', 'name']);
+    }
+
+    /** Only a Super Admin can change or remove a Super Admin account. */
+    private function guardSuperAdminAccount(Admin $admin): void
+    {
+        abort_if($admin->hasRole(config('diagnostic.super_admin.role'), 'admin') && ! auth('admin')->user()?->isSuperAdmin(), 403);
     }
 
     /** Signature image printed on lab reports this person verifies. */

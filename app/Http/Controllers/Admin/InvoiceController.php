@@ -85,13 +85,13 @@ class InvoiceController extends Controller
             'referrer' => $referrer ? ['id' => $referrer->id, 'label' => $referrer->displayName()] : null,
             'cart' => $this->cartFromOld(),
             'popular' => LabTest::query()->where('status', true)->where('is_popular', true)->orderBy('sort')->limit(8)->get(),
-            'approvers' => Admin::query()->where('id', '!=', $admin->id)->where('max_discount_percent', '>', (float) $admin->max_discount_percent)
-                ->orderByDesc('max_discount_percent')->get(['id', 'name', 'max_discount_percent']),
+            'approvers' => Admin::query()->where('id', '!=', $admin->id)->get(['id', 'name', 'max_discount_percent'])
+                ->filter(fn (Admin $a) => $a->discountLimit() > $admin->discountLimit())->sortByDesc(fn (Admin $a) => $a->discountLimit())->values(),
             'rules' => [
                 'vat' => (float) Setting::get('vat_percent', 0),
                 'home' => (float) Setting::get('home_collection_charge', 0),
                 'round' => (bool) Setting::get('round_to_whole_taka', 1),
-                'limit' => (float) $admin->max_discount_percent,
+                'limit' => $admin->discountLimit(),
             ],
         ]);
     }

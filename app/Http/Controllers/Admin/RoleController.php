@@ -35,6 +35,11 @@ class RoleController extends Controller
             $role = new Role;
             $message = 'Role Created!';
         }
+        if ($role->exists && $this->isFullAccessRole($role) && $request->name !== $role->name) {
+            $this->warningAlert('The '.$role->name.' role cannot be renamed: full access is tied to this name.');
+
+            return redirect()->route('admin.roles.index');
+        }
         $role->fill([
             'name' => $request->name,
             'guard_name' => 'admin',
@@ -49,6 +54,11 @@ class RoleController extends Controller
     public function delete(Role $role)
     {
         $this->authorize('role-delete');
+        if ($this->isFullAccessRole($role)) {
+            $this->warningAlert('The '.$role->name.' role cannot be deleted.');
+
+            return redirect()->back();
+        }
         $message = 'Already Assigned in a Permission!';
         if (! $role->permissions()->exists()) {
             $role->delete();
@@ -77,6 +87,7 @@ class RoleController extends Controller
             'staffCount' => DB::table(config('permission.table_names.model_has_roles'))->where('role_id', $role->id)->count(),
             'isOwnRole' => (bool) auth('admin')->user()?->hasRole($role),
             'canSave' => in_array('role-create', $this->admin_permissions, true),
+            'fullAccess' => $this->isFullAccessRole($role) && config('diagnostic.super_admin.full_access'),
         ]);
     }
 
@@ -93,7 +104,7 @@ class RoleController extends Controller
 
         // Never let someone remove their own way back to this screen.
         $admin = auth('admin')->user();
-        if ($admin?->hasRole($role)) {
+        if ($admin?->hasRole($role) && ! $admin->isSuperAdmin()) {
             $fromOtherRoles = $admin->roles->where('id', '!=', $role->id)->flatMap->permissions->pluck('name')
                 ->merge($admin->getDirectPermissions()->pluck('name'));
             $after = $permissions->pluck('name')->merge($fromOtherRoles);
@@ -106,5 +117,10 @@ class RoleController extends Controller
         $this->successAlert('Permissions saved for '.$role->name.'.');
 
         return redirect()->route('admin.roles.assign_permission', $role);
+    }
+
+    private function isFullAccessRole(Role $role): bool
+    {
+        return $role->name === config('diagnostic.super_admin.role');
     }
 }

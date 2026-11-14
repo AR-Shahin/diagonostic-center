@@ -187,7 +187,7 @@
                                             <select class="form-select form-select-sm" name="approver_id" aria-label="Approver">
                                                 <option value="">Approver…</option>
                                                 @foreach ($approvers as $a)
-                                                    <option value="{{ $a->id }}" @selected(old('approver_id') == $a->id)>{{ $a->name }} (≤{{ (float) $a->max_discount_percent }}%)</option>
+                                                    <option value="{{ $a->id }}" @selected(old('approver_id') == $a->id)>{{ $a->name }} (≤{{ $a->discountLimit() }}%)</option>
                                                 @endforeach
                                             </select>
                                         </div>

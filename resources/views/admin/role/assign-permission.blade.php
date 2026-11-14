@@ -83,7 +83,17 @@
     @if ($errors->any())
         <div class="alert alert-danger d-flex gap-2"><i class="fas fa-exclamation-circle mt-1"></i><div>{{ $errors->first() }}</div></div>
     @endif
-    @if ($isOwnRole)
+    @if ($fullAccess)
+        <div class="alert alert-success d-flex gap-3 align-items-start">
+            <i class="fas fa-crown fa-lg mt-1"></i>
+            <div>
+                <b>This role has full access automatically.</b>
+                Staff with the {{ $role->name }} role can do everything — every permission below, any permission added later, all branches and any discount —
+                whatever is ticked here. To turn this off, set <code>SUPER_ADMIN_FULL_ACCESS=false</code> in <code>.env</code>; the ticks below then decide.
+            </div>
+        </div>
+    @endif
+    @if ($isOwnRole && ! $fullAccess)
         <div class="alert alert-info d-flex gap-2 py-2 small"><i class="fas fa-info-circle mt-1"></i><div>You have this role yourself. Changes apply to you too as soon as you save.</div></div>
     @endif
     @unless ($canSave)

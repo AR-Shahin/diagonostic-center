@@ -128,7 +128,7 @@
         @endunless
     </div>
 
-    @if (auth('admin')->user()->hasRole('Super Admin'))
+    @if (auth('admin')->user()->isSuperAdmin())
         <details class="card mt-3">
             <summary class="card-body py-2 small text-muted" style="cursor:pointer"><i class="fas fa-database me-1"></i> Backups</summary>
             <div class="card-body pt-0">

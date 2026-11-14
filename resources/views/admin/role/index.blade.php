@@ -21,7 +21,12 @@
                         @foreach ($roles as $role)
                             <tr>
                                 <td>{{ $loop->index + 1 }}</td>
-                                <td>{{ $role->name }}</td>
+                                <td>
+                                    {{ $role->name }}
+                                    @if ($role->name === config('diagnostic.super_admin.role') && config('diagnostic.super_admin.full_access'))
+                                        <span class="badge text-bg-success ms-1" title="Has every permission automatically"><i class="fas fa-crown me-1"></i>Full access</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="" class="btn btn-sm btn-success mx-1"><i class="fa fa-eye"></i></a>
                                     <a href="{{ route('admin.roles.assign_permission',$role->id) }}" class="btn btn-sm btn-secondary mx-1"><i class="fa fa-bars"></i></a>

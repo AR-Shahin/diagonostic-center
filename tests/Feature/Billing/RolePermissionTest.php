@@ -37,10 +37,15 @@ it('saves the chosen permissions', function () {
 });
 
 it('stops you removing your own access to this page', function () {
-    $this->actingAs($this->owner, 'admin')->post(route('admin.roles.assign__permission', $this->superRole), ['permissions' => ($this->ids)(['invoice-view'])])
+    $managerRole = Role::findByName('Manager', 'admin');
+    $managerRole->givePermissionTo(['role-view', 'role-create']);
+    $manager = Admin::create(['name' => 'Mgr', 'email' => 'mgr@test.com', 'password' => 'secret']);
+    $manager->assignRole($managerRole);
+
+    $this->actingAs($manager, 'admin')->post(route('admin.roles.assign__permission', $managerRole), ['permissions' => ($this->ids)(['invoice-view'])])
         ->assertSessionHasErrors('permissions');
 
-    expect($this->superRole->fresh()->permissions()->count())->toBeGreaterThan(50);
+    expect($managerRole->fresh()->hasPermissionTo('role-create', 'admin'))->toBeTrue();
 });
 
 it('does not let staff without role permissions open or change roles', function () {
